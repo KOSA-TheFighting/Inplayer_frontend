@@ -33,9 +33,10 @@ const goToNotices = () => {
 
 <style scoped>
 .sidebar {
-  width: 200px;
-  background-color: #333;
+  background-color: #2d2d2d;
   padding: 20px;
+  width: 200px;
+  flex-shrink: 0;
 }
 
 .sidebar button {
