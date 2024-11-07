@@ -20,6 +20,7 @@ const load = async $state => {
     }
     page++;
   } catch (error) {
+    console.log("무한스크롤 비동기요청 에러: " + error);
     $state.error();
   }
 };
