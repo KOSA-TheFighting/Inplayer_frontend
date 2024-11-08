@@ -23,10 +23,26 @@ const loadAllChannels = async ($state) => {
     page.value++;
   }
 };
+
+// 정렬 함수들
+const sortByRecommendation = () => {
+  allChannels.value.sort((a, b) => b.viewers - a.viewers); // 추천순: 시청자 수 기준으로 내림차순 정렬
+};
+
+const sortByNewest = () => {
+  allChannels.value.sort((a, b) => b.id - a.id); // 최신순: ID 기준으로 내림차순 정렬
+};
+
 </script>
 
 <template>
   <section class="all-channels">
+    <!-- 정렬 버튼들 -->
+    <div class="sort-buttons">
+      <button @click="sortByRecommendation">추천순</button>
+      <button @click="sortByNewest">최신순</button>
+    </div>
+
     <h2>전체 방송 목록</h2>
     <div class="video-list">
       <div v-for="channel in allChannels" :key="channel.id" class="channel-card">
@@ -43,6 +59,30 @@ const loadAllChannels = async ($state) => {
 <style scoped>
 .all-channels {
   margin-top: 20px;
+}
+
+/* 정렬 버튼 스타일 */
+.sort-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  right: 100px;
+  margin-bottom: 20px;
+}
+
+.sort-buttons button {
+  padding: 8px 16px;
+  background-color: #f0a500;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.sort-buttons button:hover {
+  background-color: #d18e00;
 }
 
 .video-list {
