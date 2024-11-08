@@ -1,9 +1,9 @@
 <!-- HeaderComponent.vue -->
 <template>
   <header class="main-header">
-    <div class="logo">
+    <button class="logo" @click="goToHomePage">
       <img src="@/assets/Inplayer.png" alt="Logo" />
-    </div>
+    </button>
     <nav>
       <button @click="login">로그인</button>
       <button @click="startBroadcast">방송하기</button>
@@ -12,13 +12,22 @@
 </template>
 
 <script setup>
+
+import router from '@/router/index.js'
+
 const login = () => {
-  console.log('Login clicked');
+  router.push({ name: 'login' });
 };
 
 const startBroadcast = () => {
-  console.log('Start Broadcast clicked');
+  router.push({ name: 'broadcast' });
 };
+
+const goToHomePage = () => {
+  router.push({ name: 'home' });
+};
+
+
 </script>
 
 <style scoped>
