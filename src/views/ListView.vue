@@ -39,7 +39,7 @@ const sortByNewest = () => {
   <section class="all-channels">
     <!-- 정렬 버튼들 -->
     <div class="sort-buttons">
-      <button @click="sortByRecommendation">추천순</button>
+      <button @click="sortByRecommendation">시청자순</button>
       <button @click="sortByNewest">최신순</button>
     </div>
 

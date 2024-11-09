@@ -41,7 +41,7 @@ onMounted(() => {
           <h2>메인 방송 화면</h2>
           <h3>방송 제목</h3>
           <div class="main-broadcast-video">
-            <img src="https://via.placeholder.com/800x450" alt="Main Broadcast" />
+            <img src="https://via.placeholder.com/300x200" alt="Main Broadcast" />
             <span>시청자 수</span>
           </div>
         </section>
@@ -77,6 +77,24 @@ onMounted(() => {
   font-size: 14px;
   border-radius: 5px;
 }
+/* 호버 시 효과 */
+.go-to-all-channels:hover {
+  background: linear-gradient(135deg, #84d61f, #008cf0); /* 호버 시 색상 변화 */
+  transform: scale(1.05); /* 크기 확대 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 그림자 강도 증가 */
+}
+
+/* 클릭 시 효과 */
+.go-to-all-channels:active {
+  transform: scale(0.98); /* 클릭 시 살짝 눌리는 효과 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 클릭 시 그림자 효과 변경 */
+}
+
+/* 포커스 시 효과 */
+.go-to-all-channels:focus {
+  outline: none; /* 기본 포커스 아웃라인 제거 */
+  box-shadow: 0 0 8px rgba(255, 165, 0, 0.7); /* 포커스 시 밝은 색으로 아웃라인 추가 */
+}
 
 .main-container {
   display: flex;
@@ -104,6 +122,7 @@ onMounted(() => {
   height: auto;
   border-radius: 8px;
   margin-top: 30px;
+  -align: right;
 }
 .main-broadcast h2 {
   text-align: left;
