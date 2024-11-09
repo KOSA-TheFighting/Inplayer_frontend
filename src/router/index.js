@@ -18,12 +18,17 @@ const router = createRouter({
     {
       path: '/list',
       name: 'list',
-      component: () => import('../views/ListView.vue'),
+      component: () => import('@/views/ListView.vue'),
     },
     {
       path: '/broadcast',
       name: 'broadcast',
-      component: () => import('../views/BroadcastView.vue'),
+      component: () => import('@/views/BroadcastView.vue'),
+    },
+    {
+      path: '/mychannel',
+      name: 'mychannel',
+      component: () => import('@/views/MychannelView.vue'),
     },
   ],
 })
