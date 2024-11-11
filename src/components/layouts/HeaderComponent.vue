@@ -12,7 +12,7 @@
     </div>
 
     <nav>
-      <button @click="myChannel">MY 채널</button> <!-- 내 채널 버튼 추가 -->
+      <button v-if="isLoggedIn" @click="myChannel">MY 채널</button> <!-- 내 채널 버튼 추가, 로그인 상태에서만 표시 -->
       <button @click="login">로그인</button>
       <button @click="startBroadcast">방송하기</button>
     </nav>
@@ -24,9 +24,12 @@ import { ref } from 'vue';
 import router from '@/router/index.js'
 
 const searchQuery = ref('');
+const isLoggedIn = ref(false); // 로그인 상태를 나타내는 변수
 
 const login = () => {
-  router.push({ name: 'login' });
+  // 로그인 상태를 업데이트
+  isLoggedIn.value = true;
+  router.push({ name: 'home' });// LoginView 페이지 제작 후 경로 변경해야됌.
 };
 
 const startBroadcast = () => {

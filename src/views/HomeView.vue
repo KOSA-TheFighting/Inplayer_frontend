@@ -38,11 +38,16 @@ onMounted(() => {
 
         <!-- 메인 방송 화면 세션 -->
         <section class="main-broadcast">
-          <h2>메인 방송 화면</h2>
           <h3>방송 제목</h3>
           <div class="main-broadcast-video">
-            <img src="https://via.placeholder.com/300x200" alt="Main Broadcast" />
-            <span>시청자 수</span>
+            <!-- 1:3 비율로 나눈 두 개의 화면 -->
+            <div class="video-large">
+              <img src="https://via.placeholder.com/300x200" alt="Sub Broadcast" />
+
+            </div>
+            <div class="video-small">
+              <img src="https://via.placeholder.com/100x200" alt="Main Broadcast" />
+            </div>
           </div>
         </section>
 
@@ -115,18 +120,37 @@ onMounted(() => {
   border-radius: 10px;
   margin-bottom: 20px;
   text-align: right;
+  display: flex;
+  flex-direction: column;
 }
 
-.main-broadcast-video img {
+.main-broadcast-video {
   width: 100%;
   height: auto;
+  flex-direction: row;
   border-radius: 8px;
+  gap: 10px;
   margin-top: 30px;
-  -align: right;
+  display: flex;
+  align-items: center;
+
 }
-.main-broadcast h2 {
-  text-align: left;
+
+.video-large {
+  flex: 3;
+  padding: 5px;
 }
+.video-small {
+  flex: 1;
+  padding: 5px;
+}
+
+.main-broadcast img {
+  width: 100%;
+  height: auto;
+  flex-direction: row;
+}
+
 
 .main-broadcast h3 {
   font-size: 50px;

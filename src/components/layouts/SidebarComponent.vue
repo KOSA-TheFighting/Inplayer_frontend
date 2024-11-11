@@ -4,16 +4,27 @@
     <button @click="goToAllChannelsPage">전체 방송 목록</button>
     <button @click="goToCategory">카테고리</button>
     <button @click="goToFollowing">팔로잉</button>
-    <button @click="goToRecommendedStreamers">추천 스트리머 목록</button>
+    <!-- 추천 스트리머 목록 -->
+    <div v-if="recommendedStreamers.length" class="streamers-list">
+      <h3>추천 스트리머</h3>
+      <ul>
+        <li v-for="streamer in recommendedStreamers" :key="streamer.id">
+          <img :src="streamer.thumbnail" alt="Streamer Thumbnail" />
+          <span>{{ streamer.name }} - {{ streamer.viewers }} viewers</span>
+        </li>
+      </ul>
+    </div>
     <button @click="goToNotices">공지사항 게시판</button>
+
   </aside>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
-
+import { ref } from 'vue';
 
 const router = useRouter();
+const recommendedStreamers = ref([]);
 
 const goToAllChannelsPage = () => {
   router.push({ name: 'list' }); // 'ListView'는 라우터에 설정된 이름
@@ -27,9 +38,14 @@ const goToFollowing = () => {
   console.log('Navigate to Following');
 };
 
-const goToRecommendedStreamers = () => {
-  console.log('Navigate to Recommended Streamers');
-};
+// 초기화 시 추천 스트리머 데이터 로드
+recommendedStreamers.value = Array.from({ length: 5 }, (_, i) => ({
+  id: i + 1,
+  name: `Streamer ${i + 1}`,
+  viewers: Math.floor(Math.random() * 1000) + 1,
+  thumbnail: 'https://via.placeholder.com/50',
+}));
+
 
 const goToNotices = () => {
   console.log('Navigate to Notices');
@@ -76,5 +92,35 @@ const goToNotices = () => {
   color: #ffcc4d; /* 텍스트 색상 조정 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transform: translateY(1px); /* 살짝 눌리는 효과 */
+}
+
+/* 추천 스트리머 목록 스타일 */
+.streamers-list {
+  margin-top: 20px;
+  padding-left: 10px;
+}
+
+.streamers-list h3 {
+  color: #f0a500;
+  margin-bottom: 10px;
+}
+
+.streamers-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.streamers-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  color: #bbb;
+}
+
+.streamers-list img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 </style>
