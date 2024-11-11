@@ -43,6 +43,11 @@ onMounted(() => {
           <br><br>
           <span>팔로워 수 : 명</span>
         </div>
+        <!-- 첫 방송일 정보 추가 -->
+        <div class="broadcast-info">
+          <h4>첫 방송일</h4>
+          <span>2023-01-01</span> <!-- 첫 방송일 정보 -->
+        </div>
       </section>
 
       <section class="replay-videos">
@@ -115,6 +120,18 @@ onMounted(() => {
   gap: 30px; /* 세션 간 간격 */
 }
 
+.user-info-display .broadcast-info {
+  margin-top: 20px;
+}
+
+.user-info-display .broadcast-info h4 {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.user-info-display .broadcast-info span {
+  color: #ffffff;
+}
 
 .user-info-display,
 .replay-videos {

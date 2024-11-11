@@ -30,6 +30,12 @@ const router = createRouter({
       name: 'mychannel',
       component: () => import('@/views/MychannelView.vue'),
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/LoginView.vue'),
+    },
+
   ],
 })
 
