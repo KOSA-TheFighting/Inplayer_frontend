@@ -116,12 +116,11 @@ onMounted(() => {
 /* 메인 방송 화면 스타일 */
 .main-broadcast {
   background-color: #333;
-  padding: 20px;
+  padding: 5px 20px;
   border-radius: 10px;
-  margin-bottom: 20px;
   text-align: right;
-  display: flex;
   flex-direction: column;
+
 }
 
 .main-broadcast-video {
@@ -130,7 +129,8 @@ onMounted(() => {
   flex-direction: row;
   border-radius: 8px;
   gap: 10px;
-  margin-top: 30px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   display: flex;
   align-items: center;
 
@@ -147,7 +147,7 @@ onMounted(() => {
 
 .main-broadcast img {
   width: 100%;
-  height: auto;
+  height: 300px;
   flex-direction: row;
 }
 
