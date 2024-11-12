@@ -31,7 +31,7 @@ const goToAllChannelsPage = () => {
 };
 
 const goToCategory = () => {
-  console.log('Navigate to Category');
+  router.push({ name: 'category' });
 };
 
 const goToFollowing = () => {
