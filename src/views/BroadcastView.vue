@@ -1,17 +1,13 @@
 <script setup>
-
 import router from '@/router/index.js'
 
 const goToNotices = () => {
-  router.push({ name: 'notices' });
-};
-
-
+  router.push({ name: 'notices' })
+}
 </script>
 
 <template>
   <div class="container">
-
     <!-- Main Broadcast Section -->
     <main class="broadcast">
       <h2>개인 방송 화면</h2>
@@ -26,24 +22,6 @@ const goToNotices = () => {
       <div class="chat-messages">
         <!-- 채팅 메시지 영역 (예시) -->
         <div class="message">손흥민 1호 골!</div>
-        <div class="message">손흥민 2호 골!</div>
-        <div class="message">손흥민 3호 골!</div>
-        <div class="message">손흥민 4호 골!</div>
-        <div class="message">손흥민 5호 골!</div>
-        <div class="message">손흥민 6호 골!</div>
-        <div class="message">손흥민 7호 골!</div>
-        <div class="message">손흥민 8호 골!</div>
-        <div class="message">손흥민 9호 골!</div>
-        <div class="message">손흥민 10호 골!</div>
-        <div class="message">손흥민 11호 골!</div>
-        <div class="message">손흥민 12호 골!</div>
-        <div class="message">손흥민 13호 골!</div>
-        <div class="message">손흥민 14호 골!</div>
-        <div class="message">손흥민 15호 골!</div>
-        <div class="message">손흥민 16호 골!</div>
-
-
-
       </div>
       <div class="chat-input">
         <input type="text" placeholder="채팅 입력창" />
@@ -54,7 +32,8 @@ const goToNotices = () => {
     <!-- Footer -->
     <footer class="footer">
       <div class="footer-info">
-        <span>스트리머 이름</span> / <span>방송 정보</span> / <span>방송 시간</span> / <span>시청자 수</span>
+        <span>스트리머 이름</span> / <span>방송 정보</span> /
+        <span>방송 시간</span> / <span>시청자 수</span>
       </div>
       <button class="follow-button">팔로우</button>
       <button class="notice-button" @click="goToNotices">공지사항</button>
@@ -72,8 +51,8 @@ const goToNotices = () => {
 .container {
   display: grid;
   grid-template-areas:
-    "broadcast chat"
-    "footer footer";
+    'broadcast chat'
+    'footer footer';
   grid-template-columns: 2fr 1fr;
   grid-template-rows: 1fr 100px;
   height: 100vh;

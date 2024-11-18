@@ -1,58 +1,50 @@
 <script setup>
-import { ref } from 'vue';
-import InfiniteLoading from 'v3-infinite-loading';
-import 'v3-infinite-loading/lib/style.css';
+import InfiniteLoading from 'v3-infinite-loading'
+import 'v3-infinite-loading/lib/style.css'
+import { useStreamStore } from '@/stores/stream'
+import { onMounted } from 'vue'
+import StreamList from '@/components/stream/StreamList.vue'
 
-const allChannels = ref([]);
-const page = ref(1);
+const streamStore = useStreamStore()
 
-const loadAllChannels = async ($state) => {
-  const dummyData = Array.from({ length: 10 }, (_, i) => ({
-    id: page.value * 10 + i,
-    name: `Channel ${page.value * 10 + i}`,
-    viewers: Math.floor(Math.random() * 1000) + 1,
-    thumbnail: 'https://via.placeholder.com/150',
-    description: 'This is a dummy description for testing infinite scroll.',
-  }));
+const loadChannels = async $state => {
+  await streamStore.fetchChannels($state)
+}
 
-  if (page.value > 20) {
-    $state.complete();
-  } else {
-    allChannels.value.push(...dummyData);
-    $state.loaded();
-    page.value++;
-  }
-};
+const sortByRecommendation = async () => {
+  await streamStore.changeSortOption('recommendation')
+}
 
-// 정렬 함수들
-const sortByRecommendation = () => {
-  allChannels.value.sort((a, b) => b.viewers - a.viewers); // 추천순: 시청자 수 기준으로 내림차순 정렬
-};
+const sortByNewest = async () => {
+  await streamStore.changeSortOption('newest')
+}
 
-const sortByNewest = () => {
-  allChannels.value.sort((a, b) => b.id - a.id); // 최신순: ID 기준으로 내림차순 정렬
-};
-
+onMounted(async () => {
+  await streamStore.fetchChannels({ currentPage: 1 }) // 초기 페이지 로드
+})
 </script>
 
 <template>
   <section class="all-channels">
-    <!-- 정렬 버튼들 -->
     <div class="sort-buttons">
-      <button @click="sortByRecommendation">시청자순</button>
-      <button @click="sortByNewest">최신순</button>
+      <button
+        :class="{ active: streamStore.sortBy === 'recommendation' }"
+        @click="sortByRecommendation"
+      >
+        인기순
+      </button>
+      <button
+        :class="{ active: streamStore.sortBy === 'newest' }"
+        @click="sortByNewest"
+      >
+        최신순
+      </button>
     </div>
 
     <h2>전체 방송 목록</h2>
-    <div class="video-list">
-      <div v-for="channel in allChannels" :key="channel.id" class="channel-card">
-        <img :src="channel.thumbnail" alt="Channel thumbnail" />
-        <h3>{{ channel.name }}</h3>
-        <span>{{ channel.viewers }} viewers</span>
-        <p>{{ channel.description }}</p>
-      </div>
-    </div>
-    <InfiniteLoading @infinite="loadAllChannels" />
+    <StreamList :stream-list="streamStore.streams" />
+
+    <InfiniteLoading @infinite="loadChannels" />
   </section>
 </template>
 
@@ -85,32 +77,10 @@ const sortByNewest = () => {
   background-color: #d18e00;
 }
 
-.video-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
-
-.channel-card {
-  background-color: #444;
-  border-radius: 10px;
-  overflow: hidden;
-  text-align: center;
-}
-
-.channel-card img {
-  width: 100%;
-  height: auto;
-}
-
-.channel-card h3 {
-  font-size: 16px;
-  margin: 10px 0;
-  color: #f0a500;
-}
-
-.channel-card p,
-.channel-card span {
-  color: #bbb;
+.sort-buttons button.active {
+  background-color: #62b961;
+  font-weight: bold;
+  border: 2px solid #fcfcfc;
+  border-radius: 5px;
 }
 </style>
