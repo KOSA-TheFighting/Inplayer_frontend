@@ -1,23 +1,23 @@
 <script setup>
 import { RouterView } from 'vue-router'
-import HeaderComponent from './components/layouts/HeaderComponent.vue';
-import SidebarComponent from './components/layouts/SidebarComponent.vue';
-import FooterComponent from './components/layouts/FooterComponent.vue';
+import HeaderComponent from './components/layouts/HeaderComponent.vue'
+import SidebarComponent from './components/layouts/SidebarComponent.vue'
+import FooterComponent from './components/layouts/FooterComponent.vue'
 </script>
 
 <template>
   <div class="main-page">
-    <HeaderComponent/>
+    <HeaderComponent />
 
     <div class="main-container">
-      <SidebarComponent/>
+      <SidebarComponent />
 
       <main class="content">
         <RouterView />
       </main>
     </div>
 
-    <FooterComponent/>
+    <FooterComponent />
   </div>
 </template>
 

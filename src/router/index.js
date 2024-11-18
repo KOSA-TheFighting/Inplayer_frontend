@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 
-
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -11,14 +9,9 @@ const router = createRouter({
       redirect: '/home', // 기본 경로를 '/home'으로 리다이렉트
     },
     {
-      path: '/',
-      redirect: '/category', // 기본 경로를 '/category'으로 리다이렉트
-    },
-
-    {
       path: '/home',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/list',
@@ -26,12 +19,12 @@ const router = createRouter({
       component: () => import('@/views/ListView.vue'),
     },
     {
-      path: '/broadcast',
+      path: '/broadcast/:stream_id',
       name: 'broadcast',
       component: () => import('@/views/BroadcastView.vue'),
     },
     {
-      path: '/mychannel',
+      path: '/mychannel/:member_id',
       name: 'mychannel',
       component: () => import('@/views/MychannelView.vue'),
     },
@@ -45,7 +38,6 @@ const router = createRouter({
       name: 'category',
       component: () => import('@/views/CategoryView.vue'),
     },
-
   ],
 })
 

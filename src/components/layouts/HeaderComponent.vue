@@ -7,54 +7,65 @@
 
     <!-- 검색창 -->
     <div class="search-bar">
-      <input type="text" placeholder="검색어를 입력하세요" v-model="searchQuery" @keyup.enter="performSearch" />
+      <input
+        type="text"
+        placeholder="검색어를 입력하세요"
+        v-model="searchQuery"
+        @keyup.enter="performSearch"
+      />
       <button @click="performSearch">검색</button>
     </div>
 
     <nav>
-      <button v-if="isLoggedIn" @click="myChannel">MY 채널</button> <!-- 내 채널 버튼 추가, 로그인 상태에서만 표시 -->
-      <button @click="login">로그인</button>
+      <button v-if="memberStore.isLoggedIn" @click="myChannel">MY 채널</button>
+      <!-- 내 채널 버튼 추가, 로그인 상태에서만 표시 -->
+      <button v-if="!memberStore.isLoggedIn" @click="login">로그인</button>
+      <button v-if="memberStore.isLoggedIn" @click="logout">로그아웃</button>
       <button @click="startBroadcast">방송하기</button>
     </nav>
   </header>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 import router from '@/router/index.js'
+import { useMemberStore } from '@/stores/member'
 
-const searchQuery = ref('');
-const isLoggedIn = ref(false); // 로그인 상태를 나타내는 변수
+const memberStore = useMemberStore()
+const searchQuery = ref('')
 
 const login = () => {
   // 로그인 상태를 업데이트
-  isLoggedIn.value = true;
-  router.push({ name: 'home' });// LoginView 페이지 제작 후 경로 변경해야됌.
-};
+  memberStore.isLoggedIn = true
+  //router.push({ name: 'login' })
+}
+
+const logout = () => {
+  memberStore.isLoggedIn = false
+}
 
 const startBroadcast = () => {
-  router.push({ name: 'broadcast' });
-};
+  router.push({ name: 'broadcast' })
+}
 
 const myChannel = () => {
-  router.push({ name: 'mychannel' }); // 내 채널 페이지로 이동
-};
+  router.push({ name: 'mychannel' }) // 내 채널 페이지로 이동
+}
 
 const goToHomePage = () => {
-  router.push({ name: 'home' });
-};
+  router.push({ name: 'home' })
+}
 
 const performSearch = () => {
   if (searchQuery.value) {
-    router.push({ name: 'searchResults', query: { q: searchQuery.value } });
+    router.push({ name: 'searchResults', query: { q: searchQuery.value } })
   }
-};
-
-
+}
 </script>
 
 <style scoped>
 .main-header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -63,16 +74,16 @@ const performSearch = () => {
 }
 
 .main-header .logo img {
-  width: auto;  /* 원하는 너비로 조정 */
-  height: auto;  /* 비율에 맞게 높이를 자동으로 설정 */
-
+  width: auto; /* 원하는 너비로 조정 */
+  height: auto; /* 비율에 맞게 높이를 자동으로 설정 */
+  cursor: pointer;
 }
 
-
 .search-bar {
-  flex: 1;
-  display: flex;
-  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .search-bar input {
@@ -88,13 +99,14 @@ const performSearch = () => {
   background-color: #008cf0;
   color: #fff;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
 }
 
 .main-header nav button {
   margin-left: 10px;
   padding: 10px 16px;
-  background-color: #76cf22;
+  background-color: #eba50d;
   color: #ffffff;
   border: none;
   border-radius: 6px; /* 둥근 모서리 추가 */

@@ -5,51 +5,81 @@
     <button @click="goToCategory">카테고리</button>
     <button @click="goToFollowing">팔로잉</button>
     <!-- 추천 스트리머 목록 -->
-    <div v-if="recommendedStreamers.length" class="streamers-list">
-      <h3>추천 스트리머</h3>
+    <div class="streamers-list">
+      <div class="streamer-header">
+        <h3>추천 스트리머</h3>
+        <RefreshButton />
+      </div>
       <ul>
-        <li v-for="streamer in recommendedStreamers" :key="streamer.id">
-          <img :src="streamer.thumbnail" alt="Streamer Thumbnail" />
-          <span>{{ streamer.name }} - {{ streamer.viewers }} viewers</span>
+        <li
+          v-for="streamer in streamStore.recommendStreamers"
+          :key="streamer.stream_id"
+          @mouseenter="hoveredStreamer = streamer"
+          @mouseleave="hoveredStreamer = null"
+          @click="goToBroadcast(streamer.stream_id)"
+          class="streamer-item"
+        >
+          <div class="streamer-content">
+            <img :src="streamer.thumbnail" alt="Streamer Thumbnail" />
+            <span class="streamer-info">
+              <div class="name-tag-wrapper">
+                <span class="streamer-name">{{
+                  streamer.member_nickname
+                }}</span>
+                <span class="streamer-tag">{{ streamer.streamtag_name }}</span>
+              </div>
+              <span class="streamer-viewers">
+                <span class="red-dot"></span>
+                {{ streamer.stream_realtime_viewer_count }}
+              </span>
+            </span>
+          </div>
+          <!-- 호버 시 나타나는 설명 -->
+          <div v-if="hoveredStreamer === streamer" class="hover-description">
+            {{ streamer.stream_title }}
+          </div>
         </li>
       </ul>
     </div>
-    <button @click="goToNotices">공지사항 게시판</button>
 
+    <button @click="goToNotices">공지사항 게시판</button>
   </aside>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useStreamStore } from '@/stores/stream'
+import { onMounted } from 'vue'
+import RefreshButton from '../common/RefreshButton.vue'
 
-const router = useRouter();
-const recommendedStreamers = ref([]);
+const router = useRouter()
+const hoveredStreamer = ref(null)
+const streamStore = useStreamStore()
+
+onMounted(async () => {
+  await streamStore.fetchRecommendStreamers()
+})
 
 const goToAllChannelsPage = () => {
-  router.push({ name: 'list' }); // 'ListView'는 라우터에 설정된 이름
-};
+  router.push({ name: 'list' }) // 'ListView'는 라우터에 설정된 이름
+}
 
 const goToCategory = () => {
-  router.push({ name: 'category' });
-};
+  router.push({ name: 'category' })
+}
 
 const goToFollowing = () => {
-  console.log('Navigate to Following');
-};
-
-// 초기화 시 추천 스트리머 데이터 로드
-recommendedStreamers.value = Array.from({ length: 5 }, (_, i) => ({
-  id: i + 1,
-  name: `Streamer ${i + 1}`,
-  viewers: Math.floor(Math.random() * 1000) + 1,
-  thumbnail: 'https://via.placeholder.com/50',
-}));
-
+  console.log('Navigate to Following')
+}
 
 const goToNotices = () => {
-  console.log('Navigate to Notices');
-};
+  console.log('Navigate to Notices')
+}
+
+const goToBroadcast = stream_id => {
+  router.push({ name: 'broadcast', params: { stream_id } })
+}
 </script>
 
 <style scoped>
@@ -88,7 +118,7 @@ const goToNotices = () => {
 
 /* 버튼 클릭 효과 */
 .sidebar button:active {
-  background-color: #2d2d2d; /* 클릭 시 약간 어두운 색 */
+  background-color: #363535; /* 클릭 시 약간 어두운 색 */
   color: #ffcc4d; /* 텍스트 색상 조정 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transform: translateY(1px); /* 살짝 눌리는 효과 */
@@ -110,17 +140,120 @@ const goToNotices = () => {
   padding: 0;
 }
 
-.streamers-list li {
+.streamer-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px;
+  color: #bbb;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.streamer-item:hover {
+  background-color: #363535;
+}
+
+/* .streamers-list li {
   display: flex;
   align-items: center;
   margin-bottom: 8px;
   color: #bbb;
+} */
+
+.streamer-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 }
 
 .streamers-list img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.streamer-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.name-tag-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.streamer-name {
+  color: #ffffff;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.streamer-tag {
+  color: #9ca0c5; /* 태그 색상 설정 */
+  font-size: 15px;
+  line-height: 1;
+  opacity: 0.8;
+}
+
+.streamer-viewers {
+  display: flex;
+  align-items: center;
+  color: red;
+  font-size: 14px;
+}
+
+.red-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: red;
+  border-radius: 50%;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.hover-description {
+  position: absolute;
+  left: calc(100% + 20px);
+  top: 0;
+  transform: none;
+  background-color: #363535;
+  padding: 8px 12px;
+  border-radius: 4px;
+  white-space: normal;
+  width: 220px;
+  min-height: 40px;
+  font-size: 16px;
+  color: #ffffff;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  pointer-events: none;
+}
+
+.hover-description::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 15px;
+  transform: translateY(-50%);
+  border-style: solid;
+  border-width: 6px 6px 6px 0;
+  border-color: transparent #363535 transparent transparent;
+}
+
+.streamer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 </style>
