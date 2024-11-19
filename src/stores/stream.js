@@ -4,6 +4,7 @@ import { ref } from 'vue'
 
 export const useStreamStore = defineStore('stream', () => {
   const streams = ref([])
+  const allStreams = ref([])
   const recommendStreams = ref([])
   const recommendStreamers = ref([])
   const currentPage = ref(1)
@@ -13,7 +14,7 @@ export const useStreamStore = defineStore('stream', () => {
   const sortBy = ref('recommendation')
   const error = ref(null)
 
-  //전체 방송 목록 가져오기
+  //전체 방송 목록 가져오기(무한 스크롤)
   const fetchChannels = async (params = {}, $state) => {
     //모든 데이터를 불러왔거나 현재 데이터 로딩 중인 상태라면 추가 요청을 보내지 않도록 함
     if (!hasMore.value || loading.value) return
@@ -88,6 +89,23 @@ export const useStreamStore = defineStore('stream', () => {
     }
   }
 
+  //카테고리용 방송 목록 가져오기
+  const fetchAllChannels = async () => {
+    loading.value = true
+    try {
+      const response = await api.get('/stream/list', {
+        size: 1000,
+        sortBy: 'recommendation',
+      })
+
+      allStreams.value = response.pageResponse.list
+    } catch (error) {
+      console.error('방송 목록 조회 실패:', error)
+    } finally {
+      loading.value = false
+    }
+  }
+
   // const listStreams = async params => {
   //   loading.value = true
   //   error.value = null
@@ -106,6 +124,7 @@ export const useStreamStore = defineStore('stream', () => {
 
   return {
     streams,
+    allStreams,
     recommendStreams,
     recommendStreamers,
     currentPage,
@@ -118,6 +137,7 @@ export const useStreamStore = defineStore('stream', () => {
     changeSortOption,
     fetchRecommendChannels,
     fetchRecommendStreamers,
+    fetchAllChannels,
     // listStreams,
   }
 })

@@ -21,7 +21,7 @@ const goToAllChannelsPage = () => {
 .go-to-all-channels {
   position: relative;
   top: -10px;
-  left: 1170px;
+  left: 1160px;
   padding: 10px 10px;
   background-color: #f0a500;
   color: #fff;

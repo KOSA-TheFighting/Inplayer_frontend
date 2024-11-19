@@ -32,11 +32,19 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('@/views/LoginView.vue'),
+      meta: { hideLayout: true },
     },
     {
       path: '/category',
       name: 'category',
       component: () => import('@/views/CategoryView.vue'),
+      children: [
+        {
+          path: ':name',
+          name: 'category-stream-list',
+          component: () => import('@/components/stream/StreamList.vue'),
+        },
+      ],
     },
   ],
 })
