@@ -47,7 +47,7 @@ onMounted(async () => {
           <span>팔로워 수 : {{ memberStore.memberInfo.followerNum }}명</span>
         </div>
         <div class="broadcast-info">
-          <h4>첫 방송일</h4>
+          <h4>가입일</h4>
           <span>{{ memberStore.memberInfo.member_created_date }}</span>
         </div>
       </section>

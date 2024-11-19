@@ -7,6 +7,7 @@ export const useStreamStore = defineStore('stream', () => {
   const allStreams = ref([])
   const recommendStreams = ref([])
   const recommendStreamers = ref([])
+  const searchResults = ref([])
   const currentPage = ref(1)
   const size = ref(30)
   const loading = ref(false)
@@ -106,6 +107,23 @@ export const useStreamStore = defineStore('stream', () => {
     }
   }
 
+  //검색결과 가져오기
+  const performSearch = async (params = {}) => {
+    loading.value = true
+    try {
+      const response = await api.get('/stream/list', {
+        sortBy: 'recommendation',
+        search: params,
+      })
+
+      searchResults.value = response.pageResponse.list
+    } catch (error) {
+      console.error('방송 목록 조회 실패:', error)
+    } finally {
+      loading.value = false
+    }
+  }
+
   // const listStreams = async params => {
   //   loading.value = true
   //   error.value = null
@@ -127,6 +145,7 @@ export const useStreamStore = defineStore('stream', () => {
     allStreams,
     recommendStreams,
     recommendStreamers,
+    searchResults,
     currentPage,
     size,
     loading,
@@ -138,6 +157,7 @@ export const useStreamStore = defineStore('stream', () => {
     fetchRecommendChannels,
     fetchRecommendStreamers,
     fetchAllChannels,
+    performSearch,
     // listStreams,
   }
 })
