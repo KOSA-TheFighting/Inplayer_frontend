@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useMemberStore = defineStore('member', () => {
-  const isLoggedIn = ref(false)
+  const isLoggedIn = ref(false) //임시 로그인 정보, 현재 헤더컴포넌트에서만 5번 사용중
   const memberInfo = ref(null)
   const loading = ref(false)
   const error = ref(null)

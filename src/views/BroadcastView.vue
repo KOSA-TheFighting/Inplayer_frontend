@@ -1,16 +1,27 @@
 <script setup>
+import { api } from '@/api/requestAPI'
+import FollowButton from '@/components/common/FollowButton.vue'
 import router from '@/router/index.js'
+import { onMounted } from 'vue'
 
 const goToNotices = () => {
   router.push({ name: 'notices' })
 }
+
+onMounted(async () => {
+  await api.post('/stream/register', {
+    /* 내 로그인 정보 */
+  })
+})
+
+//방송 시작시 router.replace를 사용하여 경로 변경 ex)/broadcast/0 -> /broadcast/123
+//beforeRouteUpdate 훅을 사용하면 경로가 변경되었을 때도 기존 컴포넌트의 상태를 유지
 </script>
 
 <template>
   <div class="container">
     <!-- Main Broadcast Section -->
     <main class="broadcast">
-      <h2>개인 방송 화면</h2>
       <div class="broadcast-video">
         <img src="@/assets/son.png" alt="Main Broadcast" />
       </div>
@@ -35,7 +46,7 @@ const goToNotices = () => {
         <span>스트리머 이름</span> / <span>방송 정보</span> /
         <span>방송 시간</span> / <span>시청자 수</span>
       </div>
-      <button class="follow-button">팔로우</button>
+      <FollowButton />
       <button class="notice-button" @click="goToNotices">공지사항</button>
     </footer>
   </div>
@@ -55,7 +66,7 @@ const goToNotices = () => {
     'footer footer';
   grid-template-columns: 2fr 1fr;
   grid-template-rows: 1fr 100px;
-  height: 100vh;
+  height: 80vh;
   gap: 10px;
   background-color: #f7f7f7;
   font-family: Arial, sans-serif;
@@ -66,18 +77,10 @@ const goToNotices = () => {
   grid-area: broadcast;
   background-color: #2b2b2b;
   color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 3px solid #dff140; /* 테두리 추가 */
-}
-
-.broadcast h2 {
-  font-size: 24px;
-  margin-bottom: 15px;
 }
 
 .broadcast-video img {
@@ -102,6 +105,7 @@ const goToNotices = () => {
   font-size: 20px;
   color: #333;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .chat-messages {
@@ -160,20 +164,6 @@ const goToNotices = () => {
 .footer-info {
   font-size: 14px;
   color: #666;
-}
-
-.follow-button {
-  padding: 10px 20px;
-  background-color: #ff9f00;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.follow-button:hover {
-  background-color: #ff7f00;
 }
 
 .notice-button {

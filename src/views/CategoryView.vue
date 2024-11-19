@@ -1,24 +1,65 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { useStreamStore } from '@/stores/stream'
+import { ref, onMounted, computed } from 'vue'
 
-const categories = ref([]);
+import talkImg from '@/assets/talk.png'
+import studyImg from '@/assets/study.png'
+import musicImg from '@/assets/music.png'
+import artImg from '@/assets/art.png'
+import gameImg from '@/assets/game.png'
+import etcImg from '@/assets/etc.png'
+import { useRouter } from 'vue-router'
 
-const loadCategories = () => {
-  // 더미 데이터로 카테고리 정보를 정의합니다.
-  categories.value = [
-    { id: 2000, name: 'TALK', viewers: '1.2만명', liveCount: 163, thumbnail: new URL('@/assets/talk.png', import.meta.url).href},
-    { id: 2001, name: 'STUDY', viewers: '1.1만명', liveCount: 77, thumbnail: new URL('@/assets/study.png', import.meta.url).href},
-    { id: 2002, name: 'MUSIC', viewers: '1.3만명', liveCount: 23, thumbnail: new URL('@/assets/music.png', import.meta.url).href},
-    { id: 2003, name: 'ART', viewers: '1.6만명', liveCount: 54, thumbnail: new URL('@/assets/art.png', import.meta.url).href},
-    { id: 2004, name: 'GAME', viewers: '1.2만명', liveCount: 84, thumbnail: new URL('@/assets/game.png', import.meta.url).href},
-    { id: 2005, name: 'ETC', viewers: '1.8만명', liveCount: 21, thumbnail: new URL('@/assets/etc.png', import.meta.url).href},
-    // 필요한 만큼 카테고리 추가 가능
-  ];
-};
+const streamStore = useStreamStore()
+const router = useRouter()
 
-onMounted(() => {
-  loadCategories();
-});
+const defaultCategories = [
+  { id: '2000', name: 'talk', thumbnail: talkImg },
+  { id: '2001', name: 'study', thumbnail: studyImg },
+  { id: '2002', name: 'music', thumbnail: musicImg },
+  { id: '2003', name: 'art', thumbnail: artImg },
+  { id: '2004', name: 'game', thumbnail: gameImg },
+  { id: '2005', name: 'etc', thumbnail: etcImg },
+]
+
+const filteredStreams = ref([])
+
+const categories = computed(() => {
+  const groupedStreams = streamStore.allStreams.reduce((acc, stream) => {
+    const category = stream.streamtag_name
+    if (!acc[category]) {
+      acc[category] = {
+        id: stream.streamtag_num,
+        name: category,
+        viewers: 0,
+        liveCount: 0,
+      }
+    }
+    acc[category].viewers += stream.stream_realtime_viewer_count
+    acc[category].liveCount++
+    return acc
+  }, {})
+
+  return defaultCategories.map(category => ({
+    ...category,
+    viewers: groupedStreams[category.name]?.viewers || 0,
+    liveCount: groupedStreams[category.name]?.liveCount || 0,
+  }))
+})
+
+// 카테고리별 방송 목록을 필터링하고 라우터로 이동
+const getStreamListByCategory = streamtag_name => {
+  filteredStreams.value = streamStore.allStreams.filter(
+    stream => stream.streamtag_name === streamtag_name,
+  )
+  router.push('/category/' + streamtag_name)
+}
+
+onMounted(async () => {
+  if (streamStore.allStreams.length === 0) {
+    await streamStore.fetchAllChannels()
+  }
+})
 </script>
 
 <template>
@@ -26,17 +67,30 @@ onMounted(() => {
     <h2 class="category-title">카테고리</h2>
 
     <div class="category-grid">
-      <div v-for="category in categories" :key="category.id" class="category-card">
-        <img :src="category.thumbnail" alt="Category Thumbnail" class="category-thumbnail" />
+      <button
+        v-for="category in categories"
+        :key="category.id"
+        @click="getStreamListByCategory(category.name)"
+        class="category-card"
+      >
+        <img
+          :src="category.thumbnail"
+          :alt="`${category.name} Thumbnail`"
+          class="category-thumbnail"
+        />
         <div class="category-info">
           <h3 class="category-name">{{ category.name }}</h3>
-          <p class="category-viewers">{{ category.viewers }}</p>
+          <p class="category-viewers">{{ category.viewers }}명</p>
           <p class="category-live-count">라이브 {{ category.liveCount }}개</p>
         </div>
-      </div>
+      </button>
+    </div>
+
+    <div v-if="filteredStreams.length > 0">
+      <h2 class="live-title">Live 방송</h2>
+      <router-view :streamList="filteredStreams" />
     </div>
   </section>
-
 </template>
 
 <style scoped>
@@ -52,7 +106,7 @@ onMounted(() => {
 .category-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 20px;
 }
 
 .category-card {
@@ -62,6 +116,7 @@ onMounted(() => {
   overflow: hidden;
   text-align: center;
   padding: 10px;
+  cursor: pointer;
 }
 
 .category-thumbnail {

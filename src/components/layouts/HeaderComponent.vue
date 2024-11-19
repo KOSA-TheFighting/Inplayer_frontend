@@ -35,9 +35,7 @@ const memberStore = useMemberStore()
 const searchQuery = ref('')
 
 const login = () => {
-  // 로그인 상태를 업데이트
-  memberStore.isLoggedIn = true
-  //router.push({ name: 'login' })
+  router.push({ name: 'login' })
 }
 
 const logout = () => {
@@ -45,7 +43,11 @@ const logout = () => {
 }
 
 const startBroadcast = () => {
-  router.push({ name: 'broadcast' })
+  if (!memberStore.isLoggedIn) {
+    alert('로그인이 필요한 서비스 입니다.')
+    return
+  }
+  router.push({ name: 'broadcast', params: { stream_id: 0 } })
 }
 
 const myChannel = () => {
