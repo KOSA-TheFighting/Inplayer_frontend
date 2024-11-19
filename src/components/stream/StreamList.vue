@@ -13,6 +13,14 @@ const goToBroadcast = stream_id => {
   router.push({ name: 'broadcast', params: { stream_id } })
 }
 
+//태그에 맞는 카테고리 리스트로 이동하는 함수
+const goToCategoryList = streamtag_name => {
+  router.push({
+    name: 'category-stream-list',
+    params: { name: streamtag_name },
+  })
+}
+
 const props = defineProps({
   streamList: {
     type: Array,
@@ -36,7 +44,9 @@ const props = defineProps({
         {{ channel.member_nickname }}
       </h3>
       <span>{{ channel.stream_realtime_viewer_count }} 명</span>
-      <p>{{ channel.streamtag_name }}</p>
+      <p @click="goToCategoryList(channel.streamtag_name)">
+        {{ channel.streamtag_name }}
+      </p>
     </div>
   </div>
 </template>
@@ -83,6 +93,7 @@ const props = defineProps({
   border-radius: 4px; /* 둥근 모서리로 태그 스타일 */
   margin: 5px 2px; /* 각 태그 사이의 여백 */
   font-weight: bold; /* 강조된 텍스트 */
+  cursor: pointer;
 }
 .channel-card span {
   color: #bbb;

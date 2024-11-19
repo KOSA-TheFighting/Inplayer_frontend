@@ -1,6 +1,6 @@
 <script setup>
 import { useStreamStore } from '@/stores/stream'
-import { ref, onMounted, computed } from 'vue'
+import { watch, ref, onMounted, computed } from 'vue'
 
 import talkImg from '@/assets/talk.png'
 import studyImg from '@/assets/study.png'
@@ -8,10 +8,11 @@ import musicImg from '@/assets/music.png'
 import artImg from '@/assets/art.png'
 import gameImg from '@/assets/game.png'
 import etcImg from '@/assets/etc.png'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const streamStore = useStreamStore()
 const router = useRouter()
+const route = useRoute()
 
 const defaultCategories = [
   { id: '2000', name: 'talk', thumbnail: talkImg },
@@ -23,6 +24,7 @@ const defaultCategories = [
 ]
 
 const filteredStreams = ref([])
+const selectedCategory = ref(null)
 
 const categories = computed(() => {
   const groupedStreams = streamStore.allStreams.reduce((acc, stream) => {
@@ -49,11 +51,21 @@ const categories = computed(() => {
 
 // 카테고리별 방송 목록을 필터링하고 라우터로 이동
 const getStreamListByCategory = streamtag_name => {
+  selectedCategory.value = streamtag_name
   filteredStreams.value = streamStore.allStreams.filter(
     stream => stream.streamtag_name === streamtag_name,
   )
   router.push('/category/' + streamtag_name)
 }
+
+watch(
+  () => route.params.name,
+  async () => {
+    await streamStore.fetchAllChannels()
+    getStreamListByCategory(route.params.name)
+  },
+  { immediate: true }, // 컴포넌트 마운트 시 즉시 실행
+)
 
 onMounted(async () => {
   if (streamStore.allStreams.length === 0) {
@@ -87,7 +99,9 @@ onMounted(async () => {
     </div>
 
     <div v-if="filteredStreams.length > 0">
-      <h2 class="live-title">Live 방송</h2>
+      <h2 class="live-title">
+        Live 방송 <span class="selectedCategory">#{{ selectedCategory }}</span>
+      </h2>
       <router-view :streamList="filteredStreams" />
     </div>
   </section>
@@ -119,6 +133,10 @@ onMounted(async () => {
   cursor: pointer;
 }
 
+.category-card:hover {
+  border: 2px solid #fff;
+}
+
 .category-thumbnail {
   width: 100%;
   border-radius: 10px;
@@ -139,5 +157,10 @@ onMounted(async () => {
 .category-live-count {
   font-size: 14px;
   color: #bbb;
+}
+
+.selectedCategory {
+  color: #f0a500;
+  font-size: 120%;
 }
 </style>

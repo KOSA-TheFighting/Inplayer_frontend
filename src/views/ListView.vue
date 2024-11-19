@@ -74,7 +74,7 @@ onMounted(async () => {
 }
 
 .sort-buttons button:hover {
-  background-color: #d18e00;
+  background-color: #e13865;
 }
 
 .sort-buttons button.active {

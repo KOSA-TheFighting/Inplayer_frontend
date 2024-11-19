@@ -51,7 +51,7 @@ const startBroadcast = () => {
 }
 
 const myChannel = () => {
-  router.push({ name: 'mychannel' }) // 내 채널 페이지로 이동
+  router.push({ name: 'mychannel', params: '' }) // 내 채널 페이지로 이동
 }
 
 const goToHomePage = () => {
@@ -60,7 +60,7 @@ const goToHomePage = () => {
 
 const performSearch = () => {
   if (searchQuery.value) {
-    router.push({ name: 'searchResults', query: { q: searchQuery.value } })
+    router.push({ name: 'searchResults', query: { search: searchQuery.value } })
   }
 }
 </script>
@@ -103,6 +103,12 @@ const performSearch = () => {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.search-bar button:hover {
+  background-color: #569bfc;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
 }
 
 .main-header nav button {
