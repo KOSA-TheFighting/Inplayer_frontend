@@ -51,6 +51,13 @@ const router = createRouter({
       name: 'searchResults',
       component: () => import('@/views/SearchResultsView.vue'),
     },
+    {
+      path: '/oauth/kakao',
+      name: 'oauth_kakao',
+      component: () => import('@/views/KakaoView.vue'),
+    },
+
+
   ],
 })
 
