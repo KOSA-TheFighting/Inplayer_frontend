@@ -59,8 +59,13 @@ const goToHomePage = () => {
 }
 
 const performSearch = () => {
-  if (searchQuery.value) {
-    router.push({ name: 'searchResults', query: { search: searchQuery.value } })
+  if (searchQuery.value?.trim()) {
+    router.push({
+      name: 'searchResults',
+      query: { search: searchQuery.value.trim() },
+    })
+  } else {
+    alert('검색어를 입력해주세요')
   }
 }
 </script>
