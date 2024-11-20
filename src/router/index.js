@@ -38,6 +38,13 @@ const router = createRouter({
       name: 'category',
       component: () => import('@/views/CategoryView.vue'),
     },
+    {
+      path: '/oauth/kakao',
+      name: 'oauth_kakao',
+      component: () => import('@/views/KakaoView.vue'),
+    },
+
+
   ],
 })
 
