@@ -1,6 +1,4 @@
 <script setup>
-window.Kakao.init('8327d68228a934423bed1bd4436581fd')
-
 const handleKakaoLogin = () => {
   const params = {
     redirectUri: 'http://localhost:5173/oauth/kakao',
