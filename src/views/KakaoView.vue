@@ -7,7 +7,7 @@ const code = currentRoute.query.code
 
 const getKakaoToken = async code => {
   const result = await api.get('/kakao/oauth/callback', { code: code })
-  alert(code)
+  alert(result.accessToken)
   return result
 }
 
