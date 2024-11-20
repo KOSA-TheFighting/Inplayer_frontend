@@ -7,6 +7,7 @@ import FooterComponent from './components/layouts/FooterComponent.vue'
 
 const route = useRoute()
 const hideLayout = computed(() => route.meta.hideLayout || false)
+window.Kakao.init('8327d68228a934423bed1bd4436581fd')
 </script>
 
 <template>
