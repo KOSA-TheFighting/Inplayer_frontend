@@ -112,6 +112,7 @@ export const useStreamStore = defineStore('stream', () => {
     loading.value = true
     try {
       const response = await api.get('/stream/list', {
+        size: 20,
         sortBy: 'recommendation',
         search: params,
       })

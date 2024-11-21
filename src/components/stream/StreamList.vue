@@ -30,7 +30,10 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="video-list">
+  <div v-if="streamList.length === 0" class="empty-container">
+    <p class="empty-message">해당하는 목록이 없습니다.</p>
+  </div>
+  <div v-else class="video-list">
     <div
       v-for="channel in streamList"
       :key="channel.stream_id"
@@ -52,9 +55,24 @@ const props = defineProps({
 </template>
 
 <style scoped>
+.empty-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30vh; /* 화면 전체 높이 */
+  text-align: center;
+}
+
+.empty-message {
+  text-align: center;
+  font-size: 2em;
+  color: gray;
+  margin: 20px 0;
+}
+
 .video-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
   gap: 20px;
 }
 
