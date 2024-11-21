@@ -1,4 +1,5 @@
 import { api } from '@/api/requestAPI'
+import router from '@/router'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -44,6 +45,7 @@ export const useMemberStore = defineStore('member', () => {
     localStorage.removeItem('refreshToken')
     localStorage.removeItem('myInfo')
     alert('로그아웃 했습니다.')
+    router.push({ name: 'home' })
   }
 
   //페이지 새로고침 대비용 로그인상태 유지
