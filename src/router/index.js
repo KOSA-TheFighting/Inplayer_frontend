@@ -56,6 +56,17 @@ const router = createRouter({
       name: 'oauth_kakao',
       component: () => import('@/views/KakaoView.vue'),
     },
+    {
+      path: '/announcement',
+      name: 'announcementlist',
+      component: () => import('@/views/AnnouncementList.vue'),
+    },
+    {
+      path: '/announcement/:id',
+      name: 'announcementdetail',
+      component: () => import('@/views/AnnouncementDetail.vue'),
+      props: true, // URL 파라미터를 컴포넌트의 props로 전달
+    },
 
 
   ],
