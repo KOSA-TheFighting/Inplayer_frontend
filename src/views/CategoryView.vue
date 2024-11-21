@@ -83,7 +83,10 @@ onMounted(async () => {
         v-for="category in categories"
         :key="category.id"
         @click="getStreamListByCategory(category.name)"
-        class="category-card"
+        :class="[
+          'category-card',
+          { active: selectedCategory === category.name },
+        ]"
       >
         <img
           :src="category.thumbnail"
@@ -135,6 +138,11 @@ onMounted(async () => {
 
 .category-card:hover {
   border: 2px solid #fff;
+}
+
+.category-card.active {
+  border: 2px solid #f0a500;
+  transform: scale(1.05);
 }
 
 .category-thumbnail {

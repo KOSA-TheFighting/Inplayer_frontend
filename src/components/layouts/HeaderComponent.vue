@@ -27,12 +27,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import router from '@/router/index.js'
 import { useMemberStore } from '@/stores/member'
+import { useStreamStore } from '@/stores/stream'
+import { useRoute } from 'vue-router'
 
 const memberStore = useMemberStore()
+const streamStore = useStreamStore()
 const searchQuery = ref('')
+const route = useRoute()
 
 const login = () => {
   router.push({ name: 'login' })
@@ -64,10 +68,22 @@ const performSearch = () => {
       name: 'searchResults',
       query: { search: searchQuery.value.trim() },
     })
+    streamStore.performSearch(searchQuery.value)
   } else {
     alert('검색어를 입력해주세요')
   }
 }
+
+watch(
+  () => route.query.search,
+  newSearch => {
+    if (newSearch) {
+      searchQuery.value = newSearch
+    } else {
+      searchQuery.value = '' // 검색어 없으면 input 초기화
+    }
+  },
+)
 </script>
 
 <style scoped>
@@ -78,7 +94,6 @@ const performSearch = () => {
   align-items: center;
   padding: 20px 40px;
   background-color: #2d2d2d;
-
 }
 
 .logo button {
@@ -102,7 +117,6 @@ const performSearch = () => {
 
 .search-bar {
   position: relative;
-
   top: 20%;
   left: 20%;
   transform: translate(-50%, -50%);
@@ -110,8 +124,8 @@ const performSearch = () => {
 }
 
 .search-bar input {
-  width: 600px;
-  height: 30px;
+  width: 450px;
+  height: 25px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;

@@ -1,21 +1,27 @@
 <script setup>
 import { useStreamStore } from '@/stores/stream'
-import { onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import StreamList from '@/components/stream/StreamList.vue'
+// import { onMounted } from 'vue'
+// import { useRoute } from 'vue-router'
 
 const streamStore = useStreamStore()
-const route = useRoute()
+// const route = useRoute()
 
-onMounted(async () => {
-  await streamStore.performSearch(route.query.search)
-})
+// onMounted(async () => {
+//   await streamStore.performSearch(route.query.search)
+// })
 </script>
 
 <template>
   <div class="content-wrapper">
-    <section class="channel-section"></section>
+    <section class="channel-section">
+      <h2>채널</h2>
+    </section>
 
-    <section class="live-section"></section>
+    <section class="live-section">
+      <h2>라이브</h2>
+      <StreamList :stream-list="streamStore.searchResults" />
+    </section>
   </div>
 </template>
 
