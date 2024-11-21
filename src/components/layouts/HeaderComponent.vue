@@ -94,7 +94,6 @@ watch(
   align-items: center;
   padding: 20px 40px;
   background-color: #2d2d2d;
-
 }
 
 .logo button {
@@ -118,7 +117,6 @@ watch(
 
 .search-bar {
   position: relative;
-
   top: 20%;
   left: 20%;
   transform: translate(-50%, -50%);
@@ -126,8 +124,8 @@ watch(
 }
 
 .search-bar input {
-  width: 600px;
-  height: 30px;
+  width: 450px;
+  height: 25px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;

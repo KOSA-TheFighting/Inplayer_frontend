@@ -78,6 +78,7 @@ export const useStreamStore = defineStore('stream', () => {
     loading.value = true
     try {
       const response = await api.get('/stream/list', {
+        page: Math.floor(Math.random() * 20) + 1,
         size: 5,
         sortBy: 'newest',
       })

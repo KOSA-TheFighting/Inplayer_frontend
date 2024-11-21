@@ -29,7 +29,7 @@ const handleKakaoLogin = async () => {
 <template>
   <div class="login-container">
     <button class="logo" @click="goToHomePage">
-      <img src="@/assets/Inplayer1.png" alt="Logo" />
+      <img src="@/assets/Inplayer2.png" alt="Logo" />
     </button>
 
     <p class="subtitle">로그인 후 더 많은 서비스를 즐겨보세요.</p>

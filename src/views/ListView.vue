@@ -26,7 +26,8 @@ onMounted(async () => {
 
 <template>
   <section class="all-channels">
-    <div class="sort-buttons">
+    <h1>전체 방송 목록</h1>
+    <span class="sort-buttons">
       <button
         :class="{ active: streamStore.sortBy === 'recommendation' }"
         @click="sortByRecommendation"
@@ -39,9 +40,8 @@ onMounted(async () => {
       >
         최신순
       </button>
-    </div>
+    </span>
 
-    <h2>전체 방송 목록</h2>
     <StreamList :stream-list="streamStore.streams" />
 
     <InfiniteLoading @infinite="loadChannels" />
@@ -56,7 +56,7 @@ onMounted(async () => {
 /* 정렬 버튼 스타일 */
 .sort-buttons {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 10px;
   right: 100px;
   margin-bottom: 20px;

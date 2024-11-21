@@ -15,10 +15,17 @@ const goToBroadcast = stream_id => {
 
 //태그에 맞는 카테고리 리스트로 이동하는 함수
 const goToCategoryList = streamtag_name => {
-  router.push({
-    name: 'category-stream-list',
-    params: { name: streamtag_name },
-  })
+  router
+    .push({
+      name: 'category-stream-list',
+      params: { name: streamtag_name },
+    })
+    .then(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
+    })
 }
 
 const props = defineProps({
