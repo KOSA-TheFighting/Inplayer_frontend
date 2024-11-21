@@ -1,12 +1,19 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import HeaderComponent from './components/layouts/HeaderComponent.vue'
 import SidebarComponent from './components/layouts/SidebarComponent.vue'
 import FooterComponent from './components/layouts/FooterComponent.vue'
+import { useMemberStore } from './stores/member'
 
 const route = useRoute()
 const hideLayout = computed(() => route.meta.hideLayout || false)
+const memberStore = useMemberStore()
+
+onMounted(async () => {
+  memberStore.initializeAuth()
+})
+
 window.Kakao.init('8327d68228a934423bed1bd4436581fd')
 </script>
 

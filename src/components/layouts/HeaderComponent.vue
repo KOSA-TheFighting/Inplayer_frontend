@@ -39,7 +39,7 @@ const login = () => {
 }
 
 const logout = () => {
-  memberStore.isLoggedIn = false
+  memberStore.logout()
 }
 
 const startBroadcast = () => {
@@ -81,8 +81,8 @@ const performSearch = () => {
 }
 
 .main-header .logo img {
-  width: auto; /* 원하는 너비로 조정 */
-  height: auto; /* 비율에 맞게 높이를 자동으로 설정 */
+  width: auto;
+  height: auto;
   cursor: pointer;
 }
 
