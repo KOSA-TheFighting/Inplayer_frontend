@@ -4,11 +4,25 @@ import router from '@/router/index.js'
 const goToHomePage = () => {
   router.push({ name: 'home' })
 }
-const handleKakaoLogin = () => {
-  const params = {
-    redirectUri: 'http://localhost:5173/oauth/kakao',
+
+const KAKAO_CLIENT_ID = '8327d68228a934423bed1bd4436581fd'
+
+const handleKakaoLogin = async () => {
+  try {
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(KAKAO_CLIENT_ID)
+    }
+
+    // 현재 로그인 상태 확인
+    if (window.Kakao.Auth.getAccessToken()) {
+      await window.Kakao.Auth.logout()
+    }
+
+    // 로그인 페이지로 리다이렉트
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${encodeURIComponent('http://localhost:5173/oauth/kakao')}&response_type=code&prompt=login`
+  } catch (error) {
+    console.error('카카오 로그인 에러:', error)
   }
-  window.Kakao.Auth.authorize(params)
 }
 </script>
 
@@ -58,6 +72,7 @@ const handleKakaoLogin = () => {
 .logo {
   border: none;
   background-color: #fdfdfd;
+  cursor: pointer;
 }
 
 .logo img {
