@@ -2,7 +2,7 @@
 <template>
   <header class="main-header">
     <button class="logo" @click="goToHomePage">
-      <img src="@/assets/Inplayer.png" alt="Logo" />
+      <img src="@/assets/Inplayer1.png" alt="Logo" />
     </button>
 
     <!-- 검색창 -->
@@ -81,8 +81,8 @@ const performSearch = () => {
 }
 
 .main-header .logo img {
-  width: auto; /* 원하는 너비로 조정 */
-  height: auto; /* 비율에 맞게 높이를 자동으로 설정 */
+  width: auto;
+  height: auto;
   cursor: pointer;
 }
 
