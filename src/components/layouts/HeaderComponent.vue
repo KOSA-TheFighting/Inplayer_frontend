@@ -2,7 +2,7 @@
 <template>
   <header class="main-header">
     <button class="logo" @click="goToHomePage">
-      <img src="@/assets/Inplayer.png" alt="Logo" />
+      <img src="@/assets/Inplayer1.png" alt="Logo" />
     </button>
 
     <!-- 검색창 -->
