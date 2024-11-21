@@ -74,7 +74,7 @@ const goToFollowing = () => {
 }
 
 const goToNotices = () => {
-  console.log('Navigate to Notices')
+  router.push({ name: 'announcementlist' })
 }
 
 const goToBroadcast = stream_id => {
