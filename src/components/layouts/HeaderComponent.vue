@@ -39,7 +39,7 @@ const login = () => {
 }
 
 const logout = () => {
-  memberStore.isLoggedIn = false
+  memberStore.logout()
 }
 
 const startBroadcast = () => {
