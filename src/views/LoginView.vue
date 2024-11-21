@@ -7,9 +7,9 @@ const goToHomePage = () => {
 const handleKakaoLogin = () => {
   const params = {
     redirectUri: 'http://localhost:5173/oauth/kakao',
-  };
-  window.Kakao.Auth.authorize(params);
-};
+  }
+  window.Kakao.Auth.authorize(params)
+}
 </script>
 
 <template>
@@ -35,15 +35,11 @@ const handleKakaoLogin = () => {
           />
         </button>
       </div>
-
-
     </div>
-
   </div>
 </template>
 
 <style scoped>
-
 .main-container {
   background-color: aliceblue;
 }
@@ -57,7 +53,6 @@ const handleKakaoLogin = () => {
   font-family: Arial, sans-serif;
   background-color: #fffcfc;
   padding: 40px;
-
 }
 
 .logo {
@@ -67,7 +62,7 @@ const handleKakaoLogin = () => {
 
 .logo img {
   height: auto;
-  width:150px;
+  width: 150px;
   margin: -20px 20px;
   color: white;
 }
@@ -96,7 +91,6 @@ const handleKakaoLogin = () => {
   display: flex; /* 플렉스 레이아웃 적용 */
 }
 
-
 .login-btn {
   background-color: #dff140;
   color: #1c1616;
@@ -113,7 +107,7 @@ const handleKakaoLogin = () => {
   color: #1c1c1c;
   width: 40px;
   font-size: 80%;
-  }
+}
 
 .social-buttons {
   display: flex;
@@ -125,6 +119,7 @@ const handleKakaoLogin = () => {
 .social-buttons button {
   border: none;
   background-color: #fdfdfd;
+  cursor: pointer;
 }
 
 .help-links a {
