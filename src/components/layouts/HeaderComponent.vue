@@ -76,29 +76,46 @@ const performSearch = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 20px 40px;
   background-color: #2d2d2d;
+
 }
 
-.main-header .logo img {
-  width: auto;
-  height: auto;
+.logo button {
+  background-color: #2d2d2d;
+  border: none;
+  width: 100%; /* 버튼의 너비 설정 */
+  height: 80%; /* 버튼의 높이 설정 */
+  display: flex;
+  justify-content: center; /* 버튼 내부 내용(로고)을 수평 가운데 정렬 */
+  align-items: center; /* 버튼 내부 내용(로고)을 수직 가운데 정렬 */
+}
+
+.logo img {
+  width: 140px !important; /* 로고 이미지의 너비 설정 */
+  height: auto; /* 이미지의 높이는 자동으로 비율에 맞게 조정 */
+  border: none;
+  background-color: #2d2d2d;
   cursor: pointer;
+  display: block; /* 필요 시 블록 요소로 설정하여 정렬 문제 해결 */
 }
 
 .search-bar {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  position: relative;
+
+  top: 20%;
+  left: 20%;
   transform: translate(-50%, -50%);
+  margin-right: 12px;
 }
 
 .search-bar input {
-  width: 400px;
+  width: 600px;
+  height: 30px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-right: 8px;
+  margin-right: 12px;
 }
 
 .search-bar button {
@@ -108,6 +125,7 @@ const performSearch = () => {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  height: 40px;
 }
 
 .search-bar button:hover {
