@@ -60,7 +60,7 @@ const changePage = (page) => {
   getAllMembers();
 };
 
-onMounted( async () => {
+onMounted(async () => {
   await getAllMembers(); // 컴포넌트가 마운트될 때 모든 회원 조회
 });
 </script>
@@ -141,7 +141,7 @@ onMounted( async () => {
   padding: 40px;
   background-color: #1c1616;
   min-height: 100vh;
-  color: white;
+  color: #fdfdfd;
 }
 
 .members-list table {
@@ -153,11 +153,11 @@ onMounted( async () => {
 .members-list table th,
 .members-list table td {
   padding: 10px;
-  border: 1px solid #444;
+  border: 1px solid #dff140;
 }
 
 .members-list table th {
-  background-color: #333;
+  background-color: #8388bd;
 }
 
 .members-list table td {
@@ -175,7 +175,7 @@ onMounted( async () => {
 }
 
 .members-list table button:hover {
-  background-color: #c7d03b;
+  background-color: #8388bd;
 }
 
 .member-details {
@@ -196,6 +196,7 @@ onMounted( async () => {
 .admin-actions button:hover {
   background-color: #c7d03b;
 }
+
 .pagination {
   margin-top: 20px;
   display: flex;
