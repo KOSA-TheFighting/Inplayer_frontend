@@ -1,5 +1,19 @@
 <script setup>
 import router from '@/router/index.js'
+import { ref } from 'vue'
+
+const id = ref('')
+
+const password = ref('')
+
+const handleLogin = () => {
+  if (id.value === 'admin' && password.value === '1004') {
+    // 관리자 계정인 경우
+    router.push({ name: 'admin' })
+  } else {
+    alert('관리자 계정이 아닙니다.')
+  }
+}
 
 const goToHomePage = () => {
   router.push({ name: 'home' })
@@ -33,11 +47,22 @@ const handleKakaoLogin = async () => {
     </button>
 
     <p class="subtitle">로그인 후 더 많은 서비스를 즐겨보세요.</p>
-    <form class="login-form">
-      <input type="text" placeholder="아이디" class="input-field" />
-      <input type="password" placeholder="비밀번호" class="input-field" />
 
-      <button type="button" class="login-btn">로그인</button>
+    <form class="login-form" @submit.prevent="handleLogin">
+      <input
+        v-model="id"
+        type="text"
+        placeholder="아이디"
+        class="input-field"
+      />
+      <input
+        v-model="password"
+        type="password"
+        placeholder="비밀번호"
+        class="input-field"
+      />
+      <!-- 로그인 버튼 -->
+      <button type="submit" class="login-btn">로그인</button>
     </form>
     <div class="social-login">
       <p>또는</p>

@@ -88,56 +88,52 @@ watch(
 
 <style scoped>
 .main-header {
-  position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* 로고, 검색창, 네비게이션 간격 배분 */
   align-items: center;
   padding: 20px 40px;
   background-color: #2d2d2d;
 }
 
-.logo button {
+button.logo {
   background-color: #2d2d2d;
   border: none;
-  width: 100%; /* 버튼의 너비 설정 */
-  height: 80%; /* 버튼의 높이 설정 */
   display: flex;
-  justify-content: center; /* 버튼 내부 내용(로고)을 수평 가운데 정렬 */
-  align-items: center; /* 버튼 내부 내용(로고)을 수직 가운데 정렬 */
+  justify-content: left;
+  align-items: center;
+  padding: 0px;
 }
 
 .logo img {
-  width: 140px !important; /* 로고 이미지의 너비 설정 */
-  height: auto; /* 이미지의 높이는 자동으로 비율에 맞게 조정 */
+  width: 140px !important;
+  height: auto;
   border: none;
   background-color: #2d2d2d;
   cursor: pointer;
-  display: block; /* 필요 시 블록 요소로 설정하여 정렬 문제 해결 */
+  display: block;
 }
 
 .search-bar {
-  position: relative;
-  top: 20%;
-  left: 20%;
-  transform: translate(-50%, -50%);
-  margin-right: 12px;
+  display: flex;
+  align-items: center; /* 검색창과 버튼 수직 정렬 */
+  flex: 1; /* 중앙 정렬을 위해 검색창이 넓이를 차지 */
+  justify-content: center; /* 검색창을 수평 중앙에 위치 */
 }
 
 .search-bar input {
   width: 450px;
-  height: 25px;
-  padding: 8px;
+  height: 30px;
+  padding: 5px 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 12px;
+  border-radius: 4px 0 0 4px; /* 왼쪽 모서리 둥글게 */
 }
 
 .search-bar button {
-  padding: 8px 12px;
+  padding: 8px 16px;
   background-color: #008cf0;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 0 4px 4px 0; /* 오른쪽 모서리 둥글게 */
   cursor: pointer;
   height: 40px;
 }
@@ -148,32 +144,35 @@ watch(
   transform: translateY(-2px);
 }
 
+.main-header nav {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* 버튼 간격 추가 */
+}
+
 .main-header nav button {
-  margin-left: 10px;
   padding: 10px 16px;
   background-color: #eba50d;
   color: #ffffff;
   border: none;
-  border-radius: 6px; /* 둥근 모서리 추가 */
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
-  transition: all 0.3s ease; /* 부드러운 트랜지션 효과 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 버튼에 그림자 추가 */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* 호버 효과 */
 .main-header nav button:hover {
   background-color: #e13865;
   color: #ffffff;
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px); /* 버튼이 살짝 떠오르는 효과 */
+  transform: translateY(-2px);
 }
 
-/* 클릭 효과 */
 .main-header nav button:active {
   background-color: #00b08c;
   box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
-  transform: translateY(1px); /* 버튼이 눌리는 효과 */
+  transform: translateY(1px);
 }
 </style>
