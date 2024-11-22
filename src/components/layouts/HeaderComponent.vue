@@ -91,24 +91,25 @@ watch(
   display: flex;
   justify-content: space-between; /* 로고, 검색창, 네비게이션 간격 배분 */
   align-items: center;
-  padding: 20px 40px;
-  background-color: #2d2d2d;
+  padding: 0 40px;
+  background-color: rgb(45, 45, 45);
 }
 
 button.logo {
-  background-color: #2d2d2d;
+  background-color: #1c1616;
   border: none;
   display: flex;
   justify-content: left;
   align-items: center;
-  padding: 0px;
+  padding: 0;
+  margin-left: 20px; /* 로고를 오른쪽으로 20px 이동 */
 }
 
 .logo img {
   width: 140px !important;
   height: auto;
   border: none;
-  background-color: #2d2d2d;
+  background-color: #fffcfc;
   cursor: pointer;
   display: block;
 }
@@ -135,11 +136,11 @@ button.logo {
   border: none;
   border-radius: 0 4px 4px 0; /* 오른쪽 모서리 둥글게 */
   cursor: pointer;
-  height: 40px;
+  height: 44px;
 }
 
 .search-bar button:hover {
-  background-color: #569bfc;
+  background-color: #e3f441;
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
 }
