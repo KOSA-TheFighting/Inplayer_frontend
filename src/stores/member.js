@@ -11,7 +11,7 @@ export const useMemberStore = defineStore('member', () => {
   const memberInfo = ref(null) //조회용 다른사람 정보
   const loading = ref(false)
   const error = ref(null)
-  const nickname = ref(null);
+  const nickname = ref(null)
 
   //멤버 정보 가져오기
   const getMemberInfo = async member_id => {
@@ -27,28 +27,29 @@ export const useMemberStore = defineStore('member', () => {
   }
 
   // 닉네임 저장
-  const saveNickname = async (newNickname) => {
+  const saveNickname = async newNickname => {
     try {
-      const response = await api.post('/members/nickname', { nickname: newNickname });
-      nickname.value = newNickname; // 닉네임 상태 업데이트
-      alert('닉네임이 저장되었습니다.');
+      const response = await api.post('/members/nickname', {
+        nickname: newNickname,
+      })
+      nickname.value = response.newNickname // 닉네임 상태 업데이트
+      alert('닉네임이 저장되었습니다.')
     } catch (error) {
-      console.error('닉네임 저장 실패:', error);
-      alert('닉네임 저장에 실패했습니다.');
+      console.error('닉네임 저장 실패:', error)
+      alert('닉네임 저장에 실패했습니다.')
     }
-  };
+  }
 
-// 닉네임 불러오기 (초기화)
+  // 닉네임 불러오기 (초기화)
   const fetchNickname = async () => {
     try {
-      const response = await api.get('/members/nickname');
-      nickname.value = response.data.nickname;
+      const response = await api.get('/members/nickname')
+      nickname.value = response.data.nickname
     } catch (error) {
-      console.error('닉네임 불러오기 실패:', error);
-      alert('닉네임 정보를 가져오는 데 실패했습니다.');
+      console.error('닉네임 불러오기 실패:', error)
+      alert('닉네임 정보를 가져오는 데 실패했습니다.')
     }
-  };
-
+  }
 
   //로그인
   function login(token) {
@@ -94,5 +95,7 @@ export const useMemberStore = defineStore('member', () => {
     login,
     logout,
     initializeAuth,
+    saveNickname,
+    fetchNickname,
   }
 })
