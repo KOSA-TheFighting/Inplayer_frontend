@@ -2,17 +2,23 @@
 import { api } from '@/api/requestAPI'
 import FollowButton from '@/components/common/FollowButton.vue'
 import router from '@/router/index.js'
-import { onMounted } from 'vue'
+import { useStreamStore } from '@/stores/stream'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const streamStore = useStreamStore()
+const streamInfo = ref(null)
 
 const goToNotices = () => {
   router.push({ name: 'notices' })
 }
 
-onMounted(async () => {
-  await api.post('/stream/register', {
-    /* 내 로그인 정보 */
-  })
-})
+// onMounted(async () => {
+//   await api.post('/stream/register', {
+//     /* 내 로그인 정보 */
+//   })
+// }) 마운트시가 아니라 방송 시작버튼클릭시 로 변경필요
 
 //방송 시작시 router.replace를 사용하여 경로 변경 ex)/broadcast/0 -> /broadcast/123
 //beforeRouteUpdate 훅을 사용하면 경로가 변경되었을 때도 기존 컴포넌트의 상태를 유지
@@ -23,7 +29,7 @@ onMounted(async () => {
     <!-- Main Broadcast Section -->
     <main class="broadcast">
       <div class="broadcast-video">
-        <img src="@/assets/son.png" alt="Main Broadcast" />
+        <img src="@/assets/방송준비중.png" alt="Main Broadcast" />
       </div>
     </main>
 
@@ -32,7 +38,7 @@ onMounted(async () => {
       <h2>채팅창</h2>
       <div class="chat-messages">
         <!-- 채팅 메시지 영역 (예시) -->
-        <div class="message">손흥민 1호 골!</div>
+        <div class="message">채팅메시지123</div>
       </div>
       <div class="chat-input">
         <input type="text" placeholder="채팅 입력창" />
@@ -68,24 +74,29 @@ onMounted(async () => {
   grid-template-rows: 1fr 100px;
   height: 80vh;
   gap: 10px;
-  background-color: #f7f7f7;
+  background-color: #2d2d2d;
   font-family: Arial, sans-serif;
 }
 
 /* Main Broadcast Section */
 .broadcast {
   grid-area: broadcast;
-  background-color: #2b2b2b;
-  color: #ffffff;
+  background-color: #2d2d2d;
+  color: #2d2d2d;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.broadcast-video {
+  width: 100%;
+  height: 100%;
+}
+
 .broadcast-video img {
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -93,7 +104,7 @@ onMounted(async () => {
 /* Chat Section */
 .chat {
   grid-area: chat;
-  background-color: #e5e5e5;
+  background-color: #272626;
   padding: 20px;
   border-radius: 8px;
   display: flex;
@@ -103,7 +114,7 @@ onMounted(async () => {
 
 .chat h2 {
   font-size: 20px;
-  color: #333;
+  color: #ffffff;
   margin-bottom: 10px;
   text-align: center;
 }
@@ -116,8 +127,8 @@ onMounted(async () => {
 
 .message {
   padding: 8px;
-  background-color: #fff;
-  color: #000;
+  background-color: #272626;
+  color: #ffffff;
   margin-bottom: auto;
   border-radius: 5px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -131,14 +142,24 @@ onMounted(async () => {
 .chat-input input {
   flex-grow: 1;
   padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
+  font-size: 16px;
+  border: 1px solid #5c5757;
   border-radius: 5px;
+  background-color: #5c5757;
+  color: #ffffff;
+}
+
+.chat-input input::placeholder {
+  color: rgb(255, 255, 255);
+}
+
+.chat-input input:focus::placeholder {
+  color: transparent;
 }
 
 .chat-input button {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #5c5757;
   color: #fff;
   border: none;
   border-radius: 3px;
@@ -146,7 +167,7 @@ onMounted(async () => {
 }
 
 .chat-input button:hover {
-  background-color: #0056b3;
+  background-color: #574d4d;
 }
 
 /* Footer */
@@ -156,14 +177,14 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #f0f0f0;
+  background-color: #272626;
   border-top: 1px solid #ddd;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .footer-info {
-  font-size: 14px;
-  color: #666;
+  font-size: 16px;
+  color: #ffffff;
 }
 
 .notice-button {

@@ -15,6 +15,9 @@ export const useStreamStore = defineStore('stream', () => {
   const sortBy = ref('recommendation')
   const error = ref(null)
 
+  const currentStream = ref(null) // 현재 방송 데이터
+  const isStreaming = ref(false)
+
   //전체 방송 목록 가져오기(무한 스크롤)
   const fetchChannels = async (params = {}, $state) => {
     //모든 데이터를 불러왔거나 현재 데이터 로딩 중인 상태라면 추가 요청을 보내지 않도록 함
@@ -126,6 +129,37 @@ export const useStreamStore = defineStore('stream', () => {
     }
   }
 
+  // 방송 시작
+  const startStream = streamInfo => {
+    isStreaming.value = true
+    currentStream.value = {
+      member_id: streamInfo.member_id,
+      member_nickname: streamInfo.member_nickname,
+
+      stream_id: streamInfo.stream_id,
+      streamtag_num: streamInfo.streamtag_num,
+      streamtag_name: streamInfo.streamtag_name,
+      stream_title: streamInfo.stream_title,
+      stream_description: streamInfo.stream_description,
+      stream_start_time: new Date(),
+      stream_status: 'live',
+
+      stream_view_count: 0,
+      chatroom_status: 'active',
+      stream_realtime_viewer_count: 1,
+    }
+    streams.value.push(currentStream.value)
+  }
+
+  // 방송 종료
+  const stopStream = () => {
+    if (currentStream.value) {
+      currentStream.value.stream_status = 'ended'
+      currentStream.value.stream_end_time = new Date()
+    }
+    isStreaming.value = false
+  }
+
   // const listStreams = async params => {
   //   loading.value = true
   //   error.value = null
@@ -160,6 +194,8 @@ export const useStreamStore = defineStore('stream', () => {
     fetchRecommendStreamers,
     fetchAllChannels,
     performSearch,
+    startStream,
+    stopStream,
     // listStreams,
   }
 })
