@@ -67,6 +67,11 @@ const router = createRouter({
       component: () => import('@/views/AnnouncementDetail.vue'),
       props: true, // URL 파라미터를 컴포넌트의 props로 전달
     },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/AdminView.vue'),
+    },
 
 
   ],
