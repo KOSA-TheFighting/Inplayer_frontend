@@ -1,11 +1,13 @@
-<script setup></script>
+<script setup>
+const emit = defineEmits(['click'])
+</script>
 
 <template>
-  <button class="follow-button">팔로우</button>
+  <button class="start-button" @click="emit('click')">방송시작</button>
 </template>
 
 <style scoped>
-.follow-button {
+.start-button {
   padding: 10px 15px;
   background-color: #ff9f00;
   color: #fff;
@@ -16,7 +18,7 @@
   cursor: pointer;
 }
 
-.follow-button:hover {
+.start-button:hover {
   background-color: #e13865;
 }
 </style>

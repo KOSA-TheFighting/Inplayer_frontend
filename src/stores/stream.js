@@ -130,17 +130,17 @@ export const useStreamStore = defineStore('stream', () => {
   }
 
   // 방송 시작
-  const startStream = streamInfo => {
+  const startStream = async () => {
     isStreaming.value = true
     currentStream.value = {
-      member_id: streamInfo.member_id,
-      member_nickname: streamInfo.member_nickname,
+      // member_id: streamInfo.member_id,
+      // member_nickname: streamInfo.member_nickname,
 
-      stream_id: streamInfo.stream_id,
-      streamtag_num: streamInfo.streamtag_num,
-      streamtag_name: streamInfo.streamtag_name,
-      stream_title: streamInfo.stream_title,
-      stream_description: streamInfo.stream_description,
+      stream_id: 0,
+      // streamtag_num: streamInfo.streamtag_num,
+      // streamtag_name: streamInfo.streamtag_name,
+      // stream_title: streamInfo.stream_title,
+      // stream_description: streamInfo.stream_description,
       stream_start_time: new Date(),
       stream_status: 'live',
 
@@ -148,7 +148,19 @@ export const useStreamStore = defineStore('stream', () => {
       chatroom_status: 'active',
       stream_realtime_viewer_count: 1,
     }
-    streams.value.push(currentStream.value)
+    loading.value = true
+    try {
+      const response = await api.post('/stream/register', currentStream.value)
+
+      currentStream.value.stream_id = response.stream_id
+      streams.value.push(currentStream.value)
+
+      console.log('등록한 방송 정보: ' + JSON.stringify(currentStream.value))
+    } catch (error) {
+      console.error('방송 등록 실패:', error)
+    } finally {
+      loading.value = false
+    }
   }
 
   // 방송 종료
@@ -159,22 +171,6 @@ export const useStreamStore = defineStore('stream', () => {
     }
     isStreaming.value = false
   }
-
-  // const listStreams = async params => {
-  //   loading.value = true
-  //   error.value = null
-  //   try {
-  //     const response = await api.get('/stream/list', params)
-  //     streams.value = response.pageResponse.list
-
-  //     return response
-  //   } catch (e) {
-  //     error.value = e.message
-  //     throw e
-  //   } finally {
-  //     loading.value = false
-  //   }
-  // }
 
   return {
     streams,
@@ -196,6 +192,5 @@ export const useStreamStore = defineStore('stream', () => {
     performSearch,
     startStream,
     stopStream,
-    // listStreams,
   }
 })

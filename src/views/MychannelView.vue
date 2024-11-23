@@ -1,5 +1,6 @@
 <script setup>
 import AllStreamListButton from '@/components/common/AllStreamListButton.vue'
+import FollowButton from '@/components/common/FollowButton.vue'
 import { useMemberStore } from '@/stores/member'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
@@ -34,21 +35,25 @@ onMounted(async () => {
       <AllStreamListButton />
 
       <section v-if="memberStore.memberInfo" class="user-info-display">
-        <h2>채널 정보</h2>
-        <h3>{{ memberStore.memberInfo.member_nickname }}</h3>
         <div class="profile">
-          <h4>프로필 이미지</h4>
           <img
             src="https://via.placeholder.com/150"
             alt="User Profile Picture"
             class="profile-picture"
           />
-          <br /><br />
-          <span>팔로워 수 : {{ memberStore.memberInfo.followerNum }}명</span>
-        </div>
-        <div class="broadcast-info">
-          <h4>가입일</h4>
-          <span>{{ memberStore.memberInfo.member_created_date }}</span>
+          <div class="profile-details">
+            <h2>{{ memberStore.memberInfo.member_nickname }}</h2>
+            <div class="broadcast-info">
+              <div class="follower-info">
+                <span
+                  >팔로워 수 : {{ memberStore.memberInfo.followerNum }}명</span
+                >
+                <FollowButton />
+              </div>
+              <h4>가입일</h4>
+              <span>{{ memberStore.memberInfo.member_created_date }}</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -111,11 +116,30 @@ onMounted(async () => {
   margin-bottom: 10px;
 }
 
+.follower-info {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* 팔로워 텍스트와 버튼 간 간격 */
+}
+
+.profile {
+  display: flex; /* 가로 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+  gap: 30px; /* 이미지와 텍스트 간격 */
+}
+
 .profile-picture {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  margin-bottom: 10px;
+  flex-shrink: 0; /* 이미지 크기 고정 */
+}
+
+.profile-details {
+  font-size: 110%;
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  gap: 10px; /* 각 텍스트 간 간격 */
 }
 
 .profile h4 {
