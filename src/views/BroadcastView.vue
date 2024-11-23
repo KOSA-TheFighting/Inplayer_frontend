@@ -3,12 +3,10 @@ import FollowButton from '@/components/common/FollowButton.vue'
 import StartStreamButton from '@/components/common/StartStreamButton.vue'
 import StreamInfoInputForm from '@/components/stream/StreamInfoInputForm.vue'
 import router from '@/router/index.js'
-import { useMemberStore } from '@/stores/member'
 import { useStreamStore } from '@/stores/stream'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const memberStore = useMemberStore()
 const streamStore = useStreamStore()
 const stream_id = route.params.stream_id
 
@@ -17,14 +15,15 @@ const goToNotices = () => {
 }
 
 const handleStartStream = async () => {
-  if (streamStore.currentStream.stream_title) {
-    streamStore.currentStream = {
-      member_id: memberStore.myInfo,
-      member_nickname: memberStore.nickname,
-    }
-
+  if (streamStore.currentStream?.stream_title) {
     try {
       await streamStore.startStream()
+      alert('방송을 시작합니다.')
+
+      router.replace({
+        name: 'broadcast',
+        params: { stream_id: streamStore.currentStream.stream_id },
+      })
     } catch (error) {
       console.error('방송 시작 실패:', error)
     }
@@ -33,13 +32,6 @@ const handleStartStream = async () => {
   }
 }
 
-// onMounted(async () => {
-//   await api.post('/stream/register', {
-//     /* 내 로그인 정보 */
-//   })
-// }) 마운트시가 아니라 방송 시작버튼클릭시 로 변경필요
-
-//방송 시작시 router.replace를 사용하여 경로 변경 ex)/broadcast/0 -> /broadcast/123
 //beforeRouteUpdate 훅을 사용하면 경로가 변경되었을 때도 기존 컴포넌트의 상태를 유지
 </script>
 
@@ -61,7 +53,7 @@ const handleStartStream = async () => {
       </div>
       <div class="chat-input">
         <input type="text" placeholder="채팅 입력창" />
-        <button>전송</button>
+        <button>입력</button>
       </div>
     </section>
 

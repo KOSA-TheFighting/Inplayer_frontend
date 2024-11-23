@@ -15,7 +15,7 @@ export const useStreamStore = defineStore('stream', () => {
   const sortBy = ref('recommendation')
   const error = ref(null)
 
-  const currentStream = ref(null) // 현재 방송 데이터
+  const currentStream = ref({ stream_id: 0 }) // 현재 방송 데이터
   const isStreaming = ref(false)
 
   //전체 방송 목록 가져오기(무한 스크롤)
@@ -129,19 +129,23 @@ export const useStreamStore = defineStore('stream', () => {
     }
   }
 
+  //날짜 형식 변환 함수
+  const formatDate = date => {
+    const pad = num => String(num).padStart(2, '0')
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+  }
+
   // 방송 시작
   const startStream = async () => {
     isStreaming.value = true
+
     currentStream.value = {
-      // member_id: streamInfo.member_id,
-      // member_nickname: streamInfo.member_nickname,
+      ...currentStream.value,
+      member_id: localStorage.getItem('myInfo'),
+      member_nickname: localStorage.getItem('nickname'),
 
       stream_id: 0,
-      // streamtag_num: streamInfo.streamtag_num,
-      // streamtag_name: streamInfo.streamtag_name,
-      // stream_title: streamInfo.stream_title,
-      // stream_description: streamInfo.stream_description,
-      stream_start_time: new Date(),
+      stream_start_time: formatDate(new Date()),
       stream_status: 'live',
 
       stream_view_count: 0,
@@ -149,7 +153,9 @@ export const useStreamStore = defineStore('stream', () => {
       stream_realtime_viewer_count: 1,
     }
     loading.value = true
+
     try {
+      console.log('서버로 전송할 데이터', currentStream.value)
       const response = await api.post('/stream/register', currentStream.value)
 
       currentStream.value.stream_id = response.stream_id
@@ -179,6 +185,7 @@ export const useStreamStore = defineStore('stream', () => {
     recommendStreamers,
     searchResults,
     currentPage,
+    currentStream,
     size,
     loading,
     hasMore,
