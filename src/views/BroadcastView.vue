@@ -1,17 +1,36 @@
 <script setup>
-import { api } from '@/api/requestAPI'
 import FollowButton from '@/components/common/FollowButton.vue'
+import StartStreamButton from '@/components/common/StartStreamButton.vue'
+import StreamInfoInputForm from '@/components/stream/StreamInfoInputForm.vue'
 import router from '@/router/index.js'
+import { useMemberStore } from '@/stores/member'
 import { useStreamStore } from '@/stores/stream'
-import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
+const memberStore = useMemberStore()
 const streamStore = useStreamStore()
-const streamInfo = ref(null)
+const stream_id = route.params.stream_id
 
 const goToNotices = () => {
-  router.push({ name: 'notices' })
+  router.push({ name: 'announcementlist' })
+}
+
+const handleStartStream = async () => {
+  if (streamStore.currentStream.stream_title) {
+    streamStore.currentStream = {
+      member_id: memberStore.myInfo,
+      member_nickname: memberStore.nickname,
+    }
+
+    try {
+      await streamStore.startStream()
+    } catch (error) {
+      console.error('방송 시작 실패:', error)
+    }
+  } else {
+    alert('방송 정보를 업데이트 해주세요.')
+  }
 }
 
 // onMounted(async () => {
@@ -52,9 +71,16 @@ const goToNotices = () => {
         <span>스트리머 이름</span> / <span>방송 정보</span> /
         <span>방송 시간</span> / <span>시청자 수</span>
       </div>
-      <FollowButton />
+      <template v-if="stream_id === '0'">
+        <StartStreamButton @click="handleStartStream" />
+      </template>
+      <template v-else>
+        <FollowButton />
+      </template>
       <button class="notice-button" @click="goToNotices">공지사항</button>
     </footer>
+
+    <StreamInfoInputForm v-if="stream_id === '0'" />
   </div>
 </template>
 
@@ -72,7 +98,6 @@ const goToNotices = () => {
     'footer footer';
   grid-template-columns: 2fr 1fr;
   grid-template-rows: 1fr 100px;
-  height: 80vh;
   gap: 10px;
   background-color: #2d2d2d;
   font-family: Arial, sans-serif;
@@ -188,12 +213,13 @@ const goToNotices = () => {
 }
 
 .notice-button {
-  padding: 10px 20px;
+  padding: 10px 15px;
   background-color: #4caf50; /* 초록색 배경 */
   color: #fff; /* 흰색 텍스트 */
   border: none;
   border-radius: 5px;
   font-weight: bold;
+  font-size: 100%;
   cursor: pointer;
   transition: background-color 0.3s ease; /* 부드러운 색상 전환 효과 */
 }

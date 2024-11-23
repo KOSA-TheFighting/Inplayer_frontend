@@ -61,9 +61,9 @@ export const useMemberStore = defineStore('member', () => {
     }
   }
   // 닉네임 수정
-  const updateNickname = async (newNickname) => {
+  const updateNickname = async newNickname => {
     try {
-      console.log("member_id = ", myInfo.value);
+      console.log('member_id = ', myInfo.value)
       if (!myInfo.value) {
         throw new Error('멤버 정보가 없습니다.')
       }
@@ -72,12 +72,15 @@ export const useMemberStore = defineStore('member', () => {
       loading.value = true
 
       // member_id와 newNickname을 params로 전송
-      await api.patch('/member/updateNickname', null, { member_id, newNickname })
+      await api.patch('/member/updateNickname', null, {
+        member_id,
+        newNickname,
+      })
 
       // Pinia 상태 업데이트
 
-        nickname.value = newNickname; // 닉네임 변경
-        localStorage.setItem('nickname', newNickname); // 새 닉네임 저장
+      nickname.value = newNickname // 닉네임 변경
+      localStorage.setItem('nickname', newNickname) // 새 닉네임 저장
 
       alert('닉네임 수정 완료!')
     } catch (err) {
@@ -99,7 +102,6 @@ export const useMemberStore = defineStore('member', () => {
     logout,
     initializeAuth,
     loading,
-    error,
     updateNickname,
   }
 })
