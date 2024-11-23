@@ -28,7 +28,7 @@ export const apiRequest = async (
     const response = await axios(config)
     return response.data
   } catch (error) {
-    console.error('API 요청 오류:', error)
+    console.log('API 요청 오류:', error)
     throw error
   }
 }
@@ -38,4 +38,5 @@ export const api = {
   post: (endpoint, data) => apiRequest('post', endpoint, data),
   put: (endpoint, data) => apiRequest('put', endpoint, data),
   del: endpoint => apiRequest('delete', endpoint),
+  patch: (endpoint, data, params) => apiRequest('patch', endpoint, data, params),
 }

@@ -26,31 +26,6 @@ export const useMemberStore = defineStore('member', () => {
     }
   }
 
-  // 닉네임 저장
-  const saveNickname = async newNickname => {
-    try {
-      const response = await api.post('/members/nickname', {
-        nickname: newNickname,
-      })
-      nickname.value = response.newNickname // 닉네임 상태 업데이트
-      alert('닉네임이 저장되었습니다.')
-    } catch (error) {
-      console.error('닉네임 저장 실패:', error)
-      alert('닉네임 저장에 실패했습니다.')
-    }
-  }
-
-  // 닉네임 불러오기 (초기화)
-  const fetchNickname = async () => {
-    try {
-      const response = await api.get('/members/nickname')
-      nickname.value = response.data.nickname
-    } catch (error) {
-      console.error('닉네임 불러오기 실패:', error)
-      alert('닉네임 정보를 가져오는 데 실패했습니다.')
-    }
-  }
-
   //로그인
   function login(token) {
     localStorage.setItem('accessToken', token.accessToken)
@@ -78,10 +53,38 @@ export const useMemberStore = defineStore('member', () => {
   function initializeAuth() {
     const storedAccessToken = localStorage.getItem('accessToken')
     const storedRefreshToken = localStorage.getItem('refreshToken')
+    //const storedNickname = localStorage.getItem('nickname');
 
     if (storedAccessToken && storedRefreshToken) {
       isLoggedIn.value = true
       myInfo.value = localStorage.getItem('myInfo')
+    }
+  }
+  // 닉네임 수정
+  const updateNickname = async (newNickname) => {
+    try {
+      console.log("member_id = ", myInfo.value);
+      if (!myInfo.value) {
+        throw new Error('멤버 정보가 없습니다.')
+      }
+
+      const member_id = myInfo.value
+      loading.value = true
+
+      // member_id와 newNickname을 params로 전송
+      await api.patch('/member/updateNickname', null, { member_id, newNickname })
+
+      // Pinia 상태 업데이트
+
+        nickname.value = newNickname; // 닉네임 변경
+        localStorage.setItem('nickname', newNickname); // 새 닉네임 저장
+
+      alert('닉네임 수정 완료!')
+    } catch (err) {
+      error.value = '닉네임 수정에 실패했습니다.'
+      console.error(err)
+    } finally {
+      loading.value = false
     }
   }
 
@@ -95,7 +98,8 @@ export const useMemberStore = defineStore('member', () => {
     login,
     logout,
     initializeAuth,
-    saveNickname,
-    fetchNickname,
+    loading,
+    error,
+    updateNickname,
   }
 })
