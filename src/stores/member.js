@@ -45,6 +45,7 @@ export const useMemberStore = defineStore('member', () => {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
     localStorage.removeItem('myInfo')
+    localStorage.removeItem('nickname')
     alert('로그아웃 했습니다.')
     router.push({ name: 'home' })
   }
@@ -53,11 +54,11 @@ export const useMemberStore = defineStore('member', () => {
   function initializeAuth() {
     const storedAccessToken = localStorage.getItem('accessToken')
     const storedRefreshToken = localStorage.getItem('refreshToken')
-    //const storedNickname = localStorage.getItem('nickname');
 
     if (storedAccessToken && storedRefreshToken) {
       isLoggedIn.value = true
       myInfo.value = localStorage.getItem('myInfo')
+      nickname.value = localStorage.getItem('nickname')
     }
   }
   // 닉네임 수정
@@ -76,9 +77,7 @@ export const useMemberStore = defineStore('member', () => {
         member_id,
         newNickname,
       })
-
       // Pinia 상태 업데이트
-
       nickname.value = newNickname // 닉네임 변경
       localStorage.setItem('nickname', newNickname) // 새 닉네임 저장
 
