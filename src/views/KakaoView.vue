@@ -1,99 +1,83 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { api } from '@/api/requestAPI.js';
-import { useMemberStore } from '@/stores/member';
+import { onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { api } from '@/api/requestAPI.js'
+import { useMemberStore } from '@/stores/member'
 
-const currentRoute = useRoute();
-const memberStore = useMemberStore();
+const currentRoute = useRoute()
+const router = useRouter()
+const memberStore = useMemberStore()
+const newNickname = ref('')
 
-const nickname = ref(''); // 닉네임 입력 필드
-const isNicknameSet = ref(false); // 닉네임 설정 완료 여부
-
-// 카카오 인증 토큰 가져오기
-const getKakaoToken = async (code) => {
+// 카카오 토큰 가져오기
+const getKakaoToken = async code => {
   if (!code) {
-    throw new Error('카카오 인증 실패');
+    throw new Error('카카오 인증 실패')
   }
   try {
-    const response = await api.get('/kakao/oauth/callback', { code });
-    return response;
+    const response = await api.get('/kakao/oauth/callback', { code })
+    return response
   } catch (error) {
-    console.error('카카오 연동 실패:', error);
-    throw new Error('카카오 연동 실패');
+    console.error('카카오 연동 실패:', error)
+    throw new Error('카카오 연동 실패')
   }
-};
+}
 
-// 닉네임 저장 처리
-const saveNickname = async () => {
-  if (!nickname.value.trim()) {
-    alert('닉네임을 입력해주세요.');
-    return;
-  }
-
-  try {
-    // 서버에 닉네임 저장 요청
-    await api.post('/members/nickname', { nickname: nickname.value });
-    memberStore.nickname = nickname.value; // 상태 저장
-    isNicknameSet.value = true; // 닉네임 설정 완료
-    alert('닉네임이 저장되었습니다.');
-  } catch (error) {
-    console.error('닉네임 저장 실패:', error);
-    alert('닉네임 저장에 실패했습니다.');
-  }
-};
-
+// 페이지 로드 시 실행
 onMounted(async () => {
-  memberStore.kakaoCode = currentRoute.query.code; // 쿼리 파라미터에서 code 추출
+  memberStore.kakaoCode = currentRoute.query.code // 쿼리 파라미터에서 code 추출
   if (!memberStore.kakaoCode) {
-    console.error('인증 코드가 없습니다.');
-    return;
+    console.error('인증 코드가 없습니다.')
+    return
   }
   try {
-    const token = await getKakaoToken(memberStore.kakaoCode);
-    memberStore.login(token);
-
-    // 닉네임이 이미 설정된 경우 확인
-    if (memberStore.nickname) {
-      isNicknameSet.value = true;
-    }
+    const token = await getKakaoToken(memberStore.kakaoCode)
+    memberStore.login(token)
+    alert('성공적으로 로그인 하셨습니다.') // 알람 표시
   } catch (error) {
-    console.error('로그인 처리 중 에러:', error);
+    console.error('로그인 처리 중 에러:', error)
+    alert('로그인에 실패했습니다.')
   }
-});
+})
+
+// 닉네임 제출
+const submitNickname = async () => {
+  try {
+    await memberStore.updateNickname(newNickname.value)
+    alert('닉네임이 성공적으로 수정되었습니다.')
+    router.push({ name: 'home' }) // home으로 리다이렉트
+  } catch (error) {
+    console.error('닉네임 수정 실패:', error)
+    alert('닉네임 수정에 실패했습니다.')
+  }
+}
 </script>
 
 <template>
   <div>
-    <div v-if="isNicknameSet">
-      <p>안녕하세요, {{ memberStore.nickname }}님!</p>
-    </div>
-    <div v-else>
-      <p>사용할 닉네임을 입력해주세요:</p>
-      <input v-model="nickname" type="text" placeholder="닉네임을 입력하세요" />
-      <button @click="saveNickname">닉네임 저장</button>
-    </div>
+    <h1>닉네임 수정</h1>
+    <label>
+      새 닉네임:
+      <input v-model="newNickname" type="text" placeholder="새 닉네임 입력" />
+    </label>
+    <button @click="submitNickname">확인</button>
   </div>
 </template>
 
 <style scoped>
-input {
-  padding: 5px;
-  font-size: 16px;
-  margin-right: 10px;
+label {
+  display: block;
+  margin-bottom: 1rem;
 }
-
 button {
-  padding: 5px 10px;
-  font-size: 16px;
-  background-color: #4caf50;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
-
 button:hover {
-  background-color: #45a049;
+  background-color: #0056b3;
 }
 </style>
