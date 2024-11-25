@@ -1,5 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import DefaultThumbnail from '@/assets/ProfileImage.png'
 
 const router = useRouter()
 
@@ -34,6 +36,13 @@ const props = defineProps({
     required: true,
   },
 })
+
+const enhancedStreamList = computed(() => {
+  return props.streamList.map(stream => ({
+    ...stream,
+    thumbnail: stream.thumbnail || DefaultThumbnail,
+  }))
+})
 </script>
 
 <template>
@@ -42,11 +51,15 @@ const props = defineProps({
   </div>
   <div v-else class="video-list">
     <div
-      v-for="channel in streamList"
+      v-for="channel in enhancedStreamList"
       :key="channel.stream_id"
       class="channel-card"
     >
-      <img :src="channel.thumbnail" alt="Channel thumbnail" />
+      <img
+        @click="goToBroadcast(channel.stream_id)"
+        :src="channel.thumbnail"
+        alt="Channel thumbnail"
+      />
       <h4 @click="goToBroadcast(channel.stream_id)">
         {{ channel.stream_title }}
       </h4>
@@ -88,12 +101,14 @@ const props = defineProps({
   border-radius: 10px;
   overflow: hidden;
   text-align: center;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
 }
 
 .channel-card img {
-  width: 100%;
-  height: auto;
+  margin-top: 3px;
+  width: 80%;
+  height: 50%;
+  cursor: pointer;
 }
 
 .channel-card h4 {

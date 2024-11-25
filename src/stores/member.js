@@ -81,7 +81,7 @@ export const useMemberStore = defineStore('member', () => {
       nickname.value = newNickname // 닉네임 변경
       localStorage.setItem('nickname', newNickname) // 새 닉네임 저장
 
-      alert('닉네임 수정 완료!')
+      alert('닉네임 등록 완료!')
     } catch (err) {
       error.value = '닉네임 수정에 실패했습니다.'
       console.error(err)

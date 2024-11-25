@@ -67,7 +67,7 @@ const submitNickname = async () => {
   try {
     isLoading.value = true
     await memberStore.updateNickname(newNickname.value)
-    showNotification('success', '닉네임이 성공적으로 수정되었습니다.')
+    //showNotification('success', '닉네임이 성공적으로 수정되었습니다.')
     router.push({ name: 'home' })
   } catch (error) {
     console.error('닉네임 수정 실패:', error)
@@ -87,10 +87,7 @@ const showNotification = (type, message) => {
 <template>
   <div class="welcome-container">
     <div class="welcome-content">
-
-      <h1 class="welcome-title">
-        인플레이어의 회원이 되신 것을 환영합니다!
-      </h1>
+      <h1 class="welcome-title">인플레이어의 회원이 되신 것을 환영합니다!</h1>
 
       <div class="welcome-description">
         <h2>인플레이어에서 사용하실 닉네임을 작성해주세요.</h2>
@@ -103,18 +100,16 @@ const showNotification = (type, message) => {
             v-model="newNickname"
             type="text"
             placeholder="닉네임을 입력해주세요."
-            :class="{ 'error': nicknameError }"
+            :class="{ error: nicknameError }"
             @keydown.enter="submitNickname"
             @input="validateNickname"
           />
-          <span class="error-message" v-if="nicknameError">{{ nicknameError }}</span>
+          <span class="error-message" v-if="nicknameError">{{
+            nicknameError
+          }}</span>
         </div>
 
-        <button
-          @click="submitNickname"
-
-          class="submit-button"
-        >
+        <button @click="submitNickname" class="submit-button">
           <span v-if="isLoading" class="loading-spinner"></span>
           <span v-else>시작하기</span>
         </button>
@@ -166,8 +161,6 @@ const showNotification = (type, message) => {
     padding: 2rem 1.5rem;
   }
 }
-
-
 
 .welcome-title {
   font-size: 2.5rem;
