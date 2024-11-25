@@ -17,6 +17,16 @@ export default defineConfig({
         target: 'http://localhost:9700',
         changeOrigin: true,
       },
+      '/signaling': {
+        target: 'http://localhost:9700',
+        changeOrigin: true,
+        ws: true,
+      },
+      '/topic': {
+        target: 'http://localhost:9700',
+        changeOrigin: true,
+        ws: true,
+      },
     },
   },
 })

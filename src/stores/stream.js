@@ -161,9 +161,9 @@ export const useStreamStore = defineStore('stream', () => {
       currentStream.value.stream_id = response.stream_id
       streams.value.push(currentStream.value)
 
-      console.log('등록한 방송 정보: ' + JSON.stringify(currentStream.value))
+      console.log('등록한 방송 정보', currentStream.value)
     } catch (error) {
-      console.error('방송 등록 실패:', error)
+      console.error('방송 등록 실패', error)
     } finally {
       loading.value = false
     }
