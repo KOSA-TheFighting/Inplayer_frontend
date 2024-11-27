@@ -101,7 +101,7 @@ const stompClientHandler = () => {
     async offer => {
       const key = JSON.parse(offer.body).key
       const message = JSON.parse(offer.body).body
-
+      console.log('key ------------------------ ', key)
       if (!pcListMap.has(key)) {
         pcListMap.set(key, createPeerConnection(key))
       }
@@ -270,6 +270,63 @@ const connectSocket = async () => {
             }
           })
 
+          // Offer 구독
+          console.log('Offer 구독')
+          stompClient.subscribe(
+            '/topic/peer/offer/' + camKey + '/' + roomId.value,
+            async offer => {
+              const key = JSON.parse(offer.body).key
+              const message = JSON.parse(offer.body).body
+              console.log('key ------------------------ ', key)
+              if (!pcListMap.has(key)) {
+                pcListMap.set(key, createPeerConnection(key))
+              }
+
+              await pcListMap.get(key).setRemoteDescription(
+                new RTCSessionDescription({
+                  type: message.type,
+                  sdp: message.sdp,
+                }),
+              )
+              sendAnswer(pcListMap.get(key), key)
+              console.log('Processed offer from:', key)
+            },
+          )
+
+          // Answer 구독
+          stompClient.subscribe(
+            '/topic/peer/answer/' + camKey + '/' + roomId.value,
+            answer => {
+              const key = JSON.parse(answer.body).key
+              const message = JSON.parse(answer.body).body
+
+              pcListMap
+                .get(key)
+                .setRemoteDescription(new RTCSessionDescription(message))
+              console.log('Processed answer from:', key)
+            },
+          )
+
+          // ICE candidate 구독
+          stompClient.subscribe(
+            '/topic/peer/iceCandidate/' + camKey + '/' + roomId.value,
+            candidate => {
+              const key = JSON.parse(candidate.body).key
+              const message = JSON.parse(candidate.body).body
+
+              if (pcListMap.has(key)) {
+                pcListMap.get(key).addIceCandidate(
+                  new RTCIceCandidate({
+                    candidate: message.candidate,
+                    sdpMLineIndex: message.sdpMLineIndex,
+                    sdpMid: message.sdpMid,
+                  }),
+                )
+                console.log('Added ICE candidate for:', key)
+              }
+            },
+          )
+
           // 초기 방 상태 확인 요청
           stompClient.send('/app/room/status/' + roomId.value, {}, {})
 
@@ -334,10 +391,10 @@ const startBroadcasting = async () => {
 const createPeerConnection = otherKey => {
   console.log('[PeerConnection] Creating for:', otherKey)
   const pc = new RTCPeerConnection({
-    iceServers: [
-      { urls: 'stun:stun1.l.google.com:19302' },
-      { urls: 'stun:stun2.l.google.com:19302' },
-    ],
+    // iceServers: [
+    //   { urls: 'stun:stun1.l.google.com:19302' },
+    //   { urls: 'stun:stun2.l.google.com:19302' },
+    // ],
   })
 
   try {
@@ -397,11 +454,13 @@ const onTrack = (event, otherKey) => {
     video.playsInline = true
     video.srcObject = event.streams[0]
 
-    const remoteStreamDiv = document.querySelector('#remoteStreamDiv')
-    if (remoteStreamDiv) {
-      remoteStreamDiv.appendChild(video)
-      console.log('[Stream] Added new video element')
-    }
+    // const remoteStreamDiv = document.querySelector('#remoteStreamDiv')
+    // if (remoteStreamDiv) {
+    //   remoteStreamDiv.appendChild(video)
+    //   console.log('[Stream] Added new video element')
+    // }
+
+    remoteStreamRef.value.appendChild(video)
   }
 }
 
@@ -595,7 +654,7 @@ const handleStartStream = async () => {
       roomId.value = streamId
 
       // 3. 웹캠 및 방송 설정
-      await startCam() // 웹캠 시작
+      //await startCam() // 웹캠 시작
       await connectSocket() // 소켓 연결
       await startBroadcasting() // 방송 시작
 
@@ -653,7 +712,7 @@ router.beforeEach((to, from, next) => {
     <main class="broadcast">
       <div class="broadcast-video">
         <video ref="localVideoRef" v-show="isCamConnected" autoplay></video>
-        <div ref="remoteStreamRef" v-show="isRemoteCamConnected"></div>
+        <div ref="remoteStreamRef"></div>
 
         <img
           v-show="!isCamConnected && !isRemoteCamConnected"
