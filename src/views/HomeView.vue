@@ -24,20 +24,14 @@ onMounted(async () => {
       <AllStreamListButton />
       <!-- 메인 방송 화면 세션 -->
       <section class="main-broadcast">
-        <h3>방송 제목</h3>
+        <h3>방송 정보</h3>
         <div class="main-broadcast-video">
           <!-- 1:3 비율로 나눈 두 개의 화면 -->
-          <div class="video-large">
-            <img
-              src="https://via.placeholder.com/300x200"
-              alt="Sub Broadcast"
-            />
-          </div>
           <div class="video-small">
-            <img
-              src="https://via.placeholder.com/100x200"
-              alt="Main Broadcast"
-            />
+            <img src="@/assets/검은화면.png" alt="Main Broadcast" />
+          </div>
+          <div class="video-large">
+            <img src="@/assets/방송준비중.png" alt="Sub Broadcast" />
           </div>
         </div>
       </section>
@@ -77,7 +71,6 @@ onMounted(async () => {
   height: auto;
   flex-direction: row;
   border-radius: 8px;
-  gap: 10px;
   margin-top: 5px;
   margin-bottom: 5px;
   display: flex;
@@ -86,11 +79,9 @@ onMounted(async () => {
 
 .video-large {
   flex: 3;
-  padding: 5px;
 }
 .video-small {
   flex: 1;
-  padding: 5px;
 }
 
 .main-broadcast img {
