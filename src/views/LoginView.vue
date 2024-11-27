@@ -19,7 +19,7 @@ const goToHomePage = () => {
   router.push({ name: 'home' })
 }
 
-const KAKAO_CLIENT_ID = '8327d68228a934423bed1bd4436581fd'
+const KAKAO_CLIENT_ID = '1f41a5343db15932a5f2d5c4e5c81222'
 
 const handleKakaoLogin = async () => {
   try {
@@ -33,8 +33,7 @@ const handleKakaoLogin = async () => {
     }
 
     // 로그인 페이지로 리다이렉트
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}
-    &redirect_uri=${encodeURIComponent('http://localhost:5173/oauth/kakao')}&response_type=code&prompt=login`
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${encodeURIComponent('http://localhost:5173/oauth/kakao')}&response_type=code&prompt=login`
   } catch (error) {
     console.error('카카오 로그인 에러:', error)
   }
