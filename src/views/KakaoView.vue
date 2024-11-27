@@ -27,15 +27,15 @@ const getKakaoToken = async code => {
 
 // 페이지 로드 시 실행
 onMounted(async () => {
-  memberStore.kakaoCode = currentRoute.query.code
-  if (!memberStore.kakaoCode) {
+  const kakaoCode = currentRoute.query.code
+  if (!kakaoCode) {
     console.error('인증 코드가 없습니다.')
     return
   }
 
   try {
     isLoading.value = true
-    const token = await getKakaoToken(memberStore.kakaoCode)
+    const token = await getKakaoToken(kakaoCode)
     await memberStore.login(token)
     showNotification('success', '성공적으로 로그인 하셨습니다.')
   } catch (error) {

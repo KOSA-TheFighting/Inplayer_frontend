@@ -6,7 +6,6 @@ import { ref } from 'vue'
 export const useMemberStore = defineStore('member', () => {
   const isLoggedIn = ref(false)
   const myInfo = ref(null) //내 로그인 정보
-  const kakaoCode = ref(null) //카카오로부터 받은 코드
 
   const memberInfo = ref(null) //조회용 다른사람 정보
   const loading = ref(false)
@@ -93,7 +92,6 @@ export const useMemberStore = defineStore('member', () => {
   return {
     isLoggedIn,
     myInfo,
-    kakaoCode,
     memberInfo,
     error,
     getMemberInfo,
