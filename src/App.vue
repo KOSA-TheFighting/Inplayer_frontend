@@ -14,7 +14,7 @@ onMounted(async () => {
   memberStore.initializeAuth()
 })
 
-window.Kakao.init('8327d68228a934423bed1bd4436581fd')
+window.Kakao.init('1f41a5343db15932a5f2d5c4e5c81222')
 </script>
 
 <template>

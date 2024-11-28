@@ -37,7 +37,7 @@ onMounted(async () => {
       <section v-if="memberStore.memberInfo" class="user-info-display">
         <div class="profile">
           <img
-            src="https://via.placeholder.com/150"
+            src="@/assets/ProfileImage.png"
             alt="User Profile Picture"
             class="profile-picture"
           />

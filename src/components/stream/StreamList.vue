@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
-import DefaultThumbnail from '@/assets/ProfileImage.png'
+import DefaultThumbnail from '@/assets/방송준비중.png'
 
 const router = useRouter()
 

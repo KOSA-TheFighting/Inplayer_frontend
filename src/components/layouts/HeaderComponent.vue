@@ -51,7 +51,11 @@ const startBroadcast = () => {
     alert('로그인이 필요한 서비스 입니다.')
     return
   }
-  router.push({ name: 'broadcast', params: { stream_id: 0 } })
+  router.push({
+    name: 'broadcast',
+    params: { stream_id: 0 },
+    query: { isBroadcaster: 'true' },
+  })
 }
 
 const myChannel = () => {

@@ -33,7 +33,7 @@ const handleKakaoLogin = async () => {
     }
 
     // 로그인 페이지로 리다이렉트
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${encodeURIComponent('http://localhost:5173/oauth/kakao')}&response_type=code&prompt=login`
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${encodeURIComponent('http://192.168.230.7:5173/oauth/kakao')}&response_type=code&prompt=login`
   } catch (error) {
     console.error('카카오 로그인 에러:', error)
   }
