@@ -15,7 +15,7 @@ const stream_id = route.params.stream_id
 //방송 캠 및 채팅 설정용
 const isCamConnected = ref(false)
 const isRemoteCamConnected = ref(false)
-const isBroadcaster = ref(false)
+const isBroadcaster = ref(route.query.isBroadcaster === 'true')
 let localStream = undefined
 const localVideoRef = ref(null)
 const remoteStreamRef = ref(null)
@@ -296,11 +296,11 @@ const connectSocket = async () => {
           // Answer 구독
           stompClient.subscribe(
             '/topic/peer/answer/' + camKey + '/' + roomId.value,
-            answer => {
+            async answer => {
               const key = JSON.parse(answer.body).key
               const message = JSON.parse(answer.body).body
 
-              pcListMap
+              await pcListMap
                 .get(key)
                 .setRemoteDescription(new RTCSessionDescription(message))
               console.log('Processed answer from:', key)
@@ -362,7 +362,7 @@ const requestBroadcastStream = async () => {
       })
     } else {
       console.log('[시청자] 방송자를 찾을 수 없음, 재시도...')
-      setTimeout(requestBroadcastStream, 3000)
+      //setTimeout(requestBroadcastStream, 3000)
     }
   }, 1000)
 }
@@ -451,7 +451,7 @@ const onTrack = (event, otherKey) => {
     const video = document.createElement('video')
     video.id = streamId
     video.autoplay = true
-    video.playsInline = true
+    //video.playsInline = true
     video.srcObject = event.streams[0]
 
     // const remoteStreamDiv = document.querySelector('#remoteStreamDiv')
@@ -460,7 +460,10 @@ const onTrack = (event, otherKey) => {
     //   console.log('[Stream] Added new video element')
     // }
 
-    remoteStreamRef.value.appendChild(video)
+    if (remoteStreamRef.value) {
+      remoteStreamRef.value.appendChild(video)
+      isRemoteCamConnected.value = true
+    }
   }
 }
 
@@ -712,7 +715,7 @@ router.beforeEach((to, from, next) => {
     <main class="broadcast">
       <div class="broadcast-video">
         <video ref="localVideoRef" v-show="isCamConnected" autoplay></video>
-        <div ref="remoteStreamRef"></div>
+        <div ref="remoteStreamRef" v-show="isRemoteCamConnected"></div>
 
         <img
           v-show="!isCamConnected && !isRemoteCamConnected"
@@ -791,6 +794,10 @@ router.beforeEach((to, from, next) => {
 }
 
 .broadcast-video {
+  width: 100%;
+}
+
+.broadcast-video div {
   width: 100%;
 }
 

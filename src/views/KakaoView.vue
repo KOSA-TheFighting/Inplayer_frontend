@@ -40,7 +40,6 @@ onMounted(async () => {
     showNotification('success', '성공적으로 로그인 하셨습니다.')
   } catch (error) {
     console.error('로그인 처리 중 에러:', error)
-    showNotification('error', '로그인에 실패했습니다.')
   } finally {
     isLoading.value = false
   }

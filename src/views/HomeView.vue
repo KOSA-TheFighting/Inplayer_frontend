@@ -24,14 +24,14 @@ onMounted(async () => {
       <AllStreamListButton />
       <!-- 메인 방송 화면 세션 -->
       <section class="main-broadcast">
-        <h3>방송 정보</h3>
+        <h3>Live Streaming</h3>
         <div class="main-broadcast-video">
           <!-- 1:3 비율로 나눈 두 개의 화면 -->
-          <div class="video-small">
-            <img src="@/assets/검은화면.png" alt="Main Broadcast" />
-          </div>
           <div class="video-large">
-            <img src="@/assets/방송준비중.png" alt="Sub Broadcast" />
+            <img src="@/assets/메인화면.png" alt="Sub Broadcast" />
+          </div>
+          <div class="video-small">
+            <img src="@/assets/inplayer3.png" alt="Main Broadcast" />
           </div>
         </div>
       </section>
@@ -78,8 +78,10 @@ onMounted(async () => {
 }
 
 .video-large {
+  border: 4px solid #f0a500;
   flex: 3;
 }
+
 .video-small {
   flex: 1;
 }
